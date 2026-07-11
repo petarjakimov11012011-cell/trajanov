@@ -21,14 +21,17 @@ See `src/_project-state/00_stack-and-config.md` (only source). Installed this ph
 - No project-specific UI, and no design tokens (`brand.md` = SEED, so per CLAUDE.md no real UI may be written until 1.02 closes).
 
 ## Integrations wired
-- Repo: github.com/petarjakimov11012011-cell/trajanov — private ✅.
-- GitHub review Action (Claude Code) — being installed this phase via `/install-github-app` (operator step; confirmation in the Phase 1.01 completion report). The Action review on the phase PR is the Part 1 hard gate.
-- Vercel Pro — repo being imported this phase (operator step). Per-PR preview URLs from now on (D-0.00-11); the default Next.js page is viewable on the phase-1.01 PR preview. `*.vercel.app` URL recorded in the completion report.
+- Repo: github.com/petarjakimov11012011-cell/trajanov — private ✅. PR **#1** (`phase-1.01-scaffold` → `main`) open.
+- GitHub review Action (Claude Code) — workflow committed at `.github/workflows/claude-code-review.yml`; runs on every PR ✅ (ran on PR #1, `success`). It currently **skips** the review (job still passes) until a Claude auth secret is set. Installing the Claude GitHub App + adding the auth secret are OWED to the operator. A posted review is the Part 1 hard gate — **still open**.
+- Vercel Pro — **not yet connected**; import + deploy is a browser step OWED to the operator. Once connected: per-PR preview URLs (D-0.00-11); production deploys `main` (README only until PR #1 merges), so the default page shows on the PR **preview** deployment until then.
 
 ## Owed-verification register
-*(Checks the executor could not perform and owes to Lazar — in-browser checks, real-inbox tests. At 3+ items, the next phase is a verification phase.)*
-- Read the GitHub Action's review on the Phase 1.01 PR and merge the PR (the executor never merges).
-- Open the Vercel `*.vercel.app` preview URL on his own machine and confirm the default page loads.
+*(Checks the executor could not perform and owes to Lazar — in-browser checks, real-inbox tests. At 3+ items, the next phase is a verification phase. These are all Phase 1.01 closeout steps; they clear when the operator completes them — see completion report §7.)*
+- Install the Claude GitHub App on the trajanov repo (github.com/apps/claude).
+- Add the reviewer's Claude auth secret (`ANTHROPIC_API_KEY` or `CLAUDE_CODE_OAUTH_TOKEN`), then re-run the review on PR #1 and confirm no blocking findings.
+- Read the Action's review on PR #1 and merge it (the executor never merges).
+- Connect Vercel (import trajanov, deploy) and note the `*.vercel.app` URL.
+- Open the `*.vercel.app` preview URL on his own machine and confirm the default page loads.
 
 ## Placeholder register
 *(Every visible `[PLACEHOLDER: …]` on the site. Must be EMPTY before cutover — launch blocker.)*

@@ -114,3 +114,11 @@
 - **Alternatives considered:** Delete the entire top line — rejected: would discard rules every future phase depends on.
 - **Consequences:** Files no longer carry stale routing text but keep their operating contract. No downside identified.
 - **Links:** Phase 1.01 brief Task 3.8.
+
+### D-1.01-4 · 2026-07-11 · Review Action set up as a committed workflow (not via `/install-github-app`), auth deferred to operator
+- **Status:** Accepted (executor call + operator instruction)
+- **Context:** Task 5.1 says run `/install-github-app`, but that interactive Claude Code terminal wizard cannot be triggered from this (embedded) session, and the `claude` CLI is not on this machine (so `claude setup-token` for a subscription OAuth token isn't readily runnable). The operator chose to skip wiring the reviewer's Claude auth for now and finish the rest of the phase.
+- **Decision:** Commit the reviewer as `.github/workflows/claude-code-review.yml` (official `anthropics/claude-code-action@v1`, the `pr-review-comprehensive` pattern). Make it auth-agnostic: it accepts EITHER `CLAUDE_CODE_OAUTH_TOKEN` or `ANTHROPIC_API_KEY`, and SKIPS the review step (job still succeeds, with a warning) until one secret is present, so PRs don't collect a failing check. Installing the Claude GitHub App and adding the auth secret are owed to the operator; the hard-gate review posts once auth is configured (re-run the check or push).
+- **Alternatives considered:** Run `/install-github-app` — not possible here. Hard-code one auth method — rejected: the operator hadn't settled the method, so an either-secret workflow avoids a later code edit. Let the workflow fail loudly without a secret — rejected: a red ✗ on every PR is noise and misreads as a real failure.
+- **Consequences:** The reviewer is fully wired in code and activates the moment a secret is added — no further code change. Downside: the Part 1 hard gate (a posted review) is not satisfied until the operator adds auth; this phase closes only after that review runs clean and the operator merges.
+- **Links:** Phase 1.01 brief Tasks 5.1 & 6; D-0.00-11.
