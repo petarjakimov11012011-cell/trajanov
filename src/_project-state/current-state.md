@@ -22,8 +22,8 @@ See `src/_project-state/00_stack-and-config.md` (only source). **No new npm depe
 - `src/lib/utils.ts` — shadcn `cn()` helper (unchanged).
 
 ## Integrations wired
-- Repo: github.com/petarjakimov11012011-cell/trajanov — private ✅. `main` holds the 1.01 scaffold (PR #1 squash-merged via operator override, D-1.01-6). This phase opens PR **#2** (`phase-1.02-design-system` → `main`).
-- GitHub review Action (Claude Code) — committed at `.github/workflows/claude-code-review.yml`; runs on every PR but **skips until a Claude auth secret is set** (as of 1.01 close, none was added — D-1.01-5). If the operator has since added `ANTHROPIC_API_KEY` / `CLAUDE_CODE_OAUTH_TOKEN`, it will review PR #2; the executor cannot verify secret state from here.
+- Repo: github.com/petarjakimov11012011-cell/trajanov — private ✅. `main` now holds **Phase 1.02** — PR **#2** (`phase-1.02-design-system`) was squash-merged via operator override with **no review** (D-1.02-8), following PR #1 the same way (D-1.01-6).
+- GitHub review Action (Claude Code) — committed at `.github/workflows/claude-code-review.yml`; runs on every PR but **skips until a Claude auth secret is set** — still none as of this phase (D-1.01-5). Confirmed on PR #2: 0 comments / 0 reviews (skipped). It will review the NEXT PR the moment `ANTHROPIC_API_KEY` / `CLAUDE_CODE_OAUTH_TOKEN` is added.
 - Vercel Pro — as of 1.01 close, **not connected** (operator skipped, D-1.01-5). If since connected, PR #2 gets a preview URL; otherwise the preview link is owed. The executor cannot verify account state from here.
 
 ## Owed-verification register
@@ -35,9 +35,8 @@ See `src/_project-state/00_stack-and-config.md` (only source). **No new npm depe
   - Verify Bebas Neue + Hanken Grotesk **Cyrillic** coverage before the Macedonian phase (D-1.02-3).
   - Final SEO title/description copy is provisional ("Trajanov clothing store.") — owed a real pass at a content/SEO phase.
 - **Carried from 1.01 (state as last recorded; operator may have since done these):**
-  - Add a Claude auth secret to activate the automatic reviewer, and optionally install github.com/apps/claude.
+  - Add a Claude auth secret to activate the automatic reviewer, and optionally install github.com/apps/claude. **Priority: two phases have now merged with no review (D-1.01-6, D-1.02-8) — add this before 1.03 so the hard gate actually runs.**
   - Connect Vercel (import trajanov, deploy) and note the `*.vercel.app` URL.
-  - Read the Action review and merge the phase PR(s); the executor never merges.
 
 ## Placeholder register
 *(Every visible `[PLACEHOLDER: …]` on the site. Must be EMPTY before cutover — launch blocker.)*

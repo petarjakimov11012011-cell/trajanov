@@ -194,3 +194,11 @@
 - **Alternatives considered:** Fabricate placeholder renders — rejected outright (content-truth). Skip the folder entirely — rejected: it would lose the pointer that the reference is owed.
 - **Consequences:** No blockage — the tokens are enough to implement against; downside: the intended-look renders aren't in the repo for cross-checking until Lazar supplies them.
 - **Links:** `docs/design-handovers/trajanov-stitch-reference/README.md`; `current-state.md` owed-verification register.
+
+### D-1.02-8 · 2026-07-12 · PR #2 merged to `main` without a review (operator override — second occurrence)
+- **Status:** Accepted (operator decision — explicit override)
+- **Context:** `CLAUDE.md` requires the operator (not the executor) to merge, and only after the GitHub Action review posts. The reviewer skipped again on PR #2 (no auth secret set since 1.01 — D-1.01-5; confirmed: 0 comments / 0 reviews, 4s run, green by skip-gracefully design). The executor surfaced the conflict and offered the compliant paths (operator clicks Merge; or add the secret so a real review runs first); the operator explicitly directed the executor to merge via CLI anyway.
+- **Decision:** Squash-merge `phase-1.02-design-system` into `main` with no review, executed by the executor at the operator's explicit direction.
+- **Alternatives considered:** Operator merges via the GitHub UI (rule-compliant) — declined. Add the auth secret and get the intended hard-gate review first — declined.
+- **Consequences:** `main` now holds Phase 1.02; the Part 1 hard-gate review was waived again. This is the **second** override of these rules after D-1.01-6 framed the first as "one-off, not a precedent" — so in practice the "executor never merges / merge only after review" contract is not being enforced in Part 1. The reviewer still activates automatically once a secret is added; strongly recommend adding it before the next phase so the gate actually runs.
+- **Links:** D-1.01-6; D-1.01-5; D-1.01-4; `CLAUDE.md` Branch & PR rules; PR #2.

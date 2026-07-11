@@ -19,7 +19,7 @@ No `briefs/Part-1-Phase-1.02-*.md` code brief was supplied — only the design h
 - ✅ **`npm run build` and `npm run lint` pass** — evidence: `lint` → exit 0, no findings; `build` → `✓ Compiled successfully`, `Finished TypeScript`, routes `/` and `/_not-found` prerendered static, exit 0.
 - ✅ **State duties done** — evidence: `current-state.md` overwritten (NEXT set), `file-map.md` synced, `00_stack-and-config.md` appended (see §6).
 - ⚠️ **Stitch visual-reference assets placed** — the export (`screen.png`/`code.html`/`DESIGN.md`) was not supplied, so the folder holds a PENDING `README.md` instead and the assets are on the owed register (D-1.02-7). Nothing was invented.
-- ⚠️ **Automatic review + preview on the PR (Part 1 hard gate)** — depends on the operator having added the reviewer auth secret / connected Vercel since 1.01 (both were skipped then — D-1.01-5); the executor cannot verify account state. PR #2 is opened; if unconfigured, the review skips and no preview URL is produced.
+- ❌ **Automatic review on the PR (Part 1 hard gate)** — the reviewer **skipped** on PR #2 (0 comments / 0 reviews; no auth secret set since 1.01 — D-1.01-5). At the operator's explicit direction, PR #2 was squash-merged to `main` **without a review** (D-1.02-8), waiving the hard gate for the second time (after D-1.01-6). Recommend adding the auth secret before 1.03 so the gate actually runs.
 
 ## 3. Decisions I made during this phase
 All logged in `decisions.md`:
@@ -27,6 +27,7 @@ All logged in `decisions.md`:
 - **D-1.02-5** — token architecture: single always-dark theme, `brand.md` tokens as source with shadcn names aliased on top; dropped the light `:root`/`.dark` split and the unused sidebar/chart tokens; added `.type-*` utilities.
 - **D-1.02-6** — scope: executed 1.02 as design-system-in-code only (tokens/fonts/Button/type utilities), no product or section UI; replaced the create-next-app page with a minimal on-brand placeholder to satisfy the render-before-close rule. (Operator ratified "do what you recommend.")
 - **D-1.02-7** — Stitch reference assets absent; proceeded from tokens, created a PENDING folder README, registered the export as owed. (Operator ratified "do what you recommend.")
+- **D-1.02-8** — PR #2 squash-merged to `main` with no review at the operator's explicit direction (reviewer skipped, no secret); second override after D-1.01-6. The executor surfaced the conflict and offered the compliant paths first.
 
 ## 4. Deviations from the brief
 - **No code brief existed** — only the design handover was handed over; scope was inferred from it plus the repo's own signals and confirmed with the operator ("do what you recommend"). Logged as D-1.02-6.
