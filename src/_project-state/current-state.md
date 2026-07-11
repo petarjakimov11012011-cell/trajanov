@@ -22,8 +22,8 @@ See `src/_project-state/00_stack-and-config.md` (only source). Installed this ph
 
 ## Integrations wired
 - Repo: github.com/petarjakimov11012011-cell/trajanov — private ✅. PR **#1** (`phase-1.01-scaffold` → `main`) open.
-- GitHub review Action (Claude Code) — workflow committed at `.github/workflows/claude-code-review.yml`; runs on every PR ✅ (ran on PR #1, `success`). It currently **skips** the review (job still passes) until a Claude auth secret is set. Installing the Claude GitHub App + adding the auth secret are OWED to the operator. A posted review is the Part 1 hard gate — **still open**.
-- Vercel Pro — **not yet connected**; import + deploy is a browser step OWED to the operator. Once connected: per-PR preview URLs (D-0.00-11); production deploys `main` (README only until PR #1 merges), so the default page shows on the PR **preview** deployment until then.
+- GitHub review Action (Claude Code) — workflow committed at `.github/workflows/claude-code-review.yml`; runs on every PR ✅ (ran on PR #1, `success`). It currently **skips** the review (job still passes) until a Claude auth secret is set. The operator elected **not to add the auth secret this phase** (D-1.01-5); installing the Claude GitHub App + adding the secret remain OWED. A posted review is the Part 1 hard gate — **still open**.
+- Vercel Pro — **not yet connected** (operator skipped this phase, D-1.01-5); import + deploy is a browser step OWED to the operator. Once connected: per-PR preview URLs (D-0.00-11); production deploys `main` (README only until PR #1 merges), so the default page shows on the PR **preview** deployment until then.
 
 ## Owed-verification register
 *(Checks the executor could not perform and owes to Lazar — in-browser checks, real-inbox tests. At 3+ items, the next phase is a verification phase. These are all Phase 1.01 closeout steps; they clear when the operator completes them — see completion report §7.)*

@@ -12,7 +12,7 @@ There is now a real, private project: [petarjakimov11012011-cell/trajanov](https
 - ✅ **Exact pinned versions appended to `00_stack-and-config.md`; D-0.00-11 appended to `decisions.md`** — evidence: dated entry with next@16.2.10, react@19.2.4, react-dom@19.2.4, typescript@5.9.3, tailwindcss@4.3.2, @tailwindcss/postcss@4.3.2, eslint@9.39.5, eslint-config-next@16.2.10, lucide-react@1.24.0 (exact), shadcn CLI 4.13.0, Node v24.17.0. `D-0.00-11` present verbatim (plus my `D-1.01-1..4`).
 - ✅ **`current-state.md` overwritten; first line reads `NEXT: 1.02 — Design system`** — evidence: `head -1` → `NEXT: 1.02 — Design system`.
 - ❌ **Vercel project imported; production deploy of the default page succeeded (URL noted)** — not done: this is a browser/login step on the operator's Vercel Pro account. Exact steps in §7 / the checklist below. Owed to the operator.
-- ⚠️ **PR open from `phase-1.01-scaffold` to `main`; the GitHub Action posted a review (Part 1 hard gate)** — PR is open ([#1](https://github.com/petarjakimov11012011-cell/trajanov/pull/1)) and the review **workflow is committed and ran on the PR** (run 29163307968, conclusion `success`). But it **skipped the actual review** because no Claude auth secret is set yet — the operator chose to defer that. So **no review is posted yet**: the hard gate is not satisfied until auth is added and the review runs clean. This is the one open blocker to closing the phase (see §7 checklist).
+- ⚠️ **PR open from `phase-1.01-scaffold` to `main`; the GitHub Action posted a review (Part 1 hard gate)** — PR **is open** ([#1](https://github.com/petarjakimov11012011-cell/trajanov/pull/1)) ✅ and the review **workflow is committed and ran on the PR** (run 29163307968, conclusion `success`). But **no review is posted** ❌: the operator **elected not to add the Anthropic API key / auth secret this phase** (**D-1.01-5**), so the review step skips. The Part 1 hard gate is therefore **not satisfied** and PR #1 cannot be merged under the brief's rule yet. The workflow activates with zero code changes the moment a secret is added later (re-run the check or push). This is the open blocker to closing the phase.
 - ✅ **Completion report filed with evidence per item** — this file.
 
 ## 3. Decisions I made during this phase
@@ -22,11 +22,12 @@ All logged in `decisions.md`:
 - **D-1.01-2** — Kept shadcn `init`'s auto-seeded `button.tsx` + `utils.ts` (base-nova preset). I ran no `shadcn add`; deleting init's own output would be a bigger deviation from "init, defaults."
 - **D-1.01-3** — Read "strip the placement-note line" as removing only the leading "`Destination in repo: path.`" sentence, preserving each note's binding operating guidance (append-only rules, version-pinning rule, map-update discipline).
 - **D-1.01-4** — Set up the reviewer as a committed workflow (`anthropics/claude-code-action@v1`) instead of `/install-github-app` (not runnable here); made it auth-agnostic (either `CLAUDE_CODE_OAUTH_TOKEN` or `ANTHROPIC_API_KEY`) and skip-until-configured. App install + auth secret owed to the operator.
+- **D-1.01-5** — Operator elected **not to add the Anthropic API key / reviewer auth secret** this phase (and skipped Vercel). The automatic reviewer stays inactive and the Part 1 hard gate is unmet; the phase is code-complete but not closed until a secret is added, the review runs clean, and PR #1 is merged.
 - Minor, not a formal D-entry: fixed the leaked package name `trajanov-scaffold-tmp` → `trajanov` (the scaffold ran in a temp dir per the brief's "scaffold into a temp dir and move" allowance).
 
 ## 4. Deviations from the brief
 - **Task 5.1 (`/install-github-app`)** — the interactive wizard can't be triggered from this session, and the `claude` CLI isn't on this machine. Replaced with an equivalent committed review workflow (D-1.01-4). Installing the Claude GitHub App is a browser step the operator agreed to (below).
-- **Task 5.2 (Vercel)** and the **reviewer auth secret** — deferred to the operator per their instruction to "skip [auth] and do the rest of the phase." Both are browser/login steps I cannot perform. Consequences tracked in §7 and the owed-verification register.
+- **Task 5.2 (Vercel)** and the **reviewer auth secret (Task 5.1 / 6)** — the operator **decided not to add the Anthropic API key and to skip Vercel this phase** (**D-1.01-5**). Both are browser/login/credential steps the executor cannot perform (entering an API key into a field is off-limits). Consequences tracked in §7 and the owed-verification register; the hard gate stays open until the operator returns to these.
 - **Stack version** — `create-next-app@latest` produced Next 16 / React 19 (newer than the plan's `next@15` illustration). Not a deviation from the brief itself ("scaffold with defaults"); noted in `00_stack-and-config.md`.
 - **Collaborator (Task 5.3)** — N/A: Lazar and Petar share the `petarjakimov11012011-cell` account, so no invite (confirmed with the operator; see D-0.00-8).
 
@@ -63,7 +64,7 @@ All logged in `decisions.md`:
 These are mirrored in `current-state.md`'s owed-verification register.
 
 ## 8. Risks, follow-ups, what the next phase needs to know
-- **Hard gate is still open:** the phase is not fully closed until the reviewer auth secret is added and the review runs clean (steps 2–3 above), then PR #1 is merged (step 5).
+- **Hard gate is open by operator decision (D-1.01-5):** the operator chose not to add the auth secret this phase, so no review has posted. The phase is not fully closed until the secret is added and the review runs clean (steps 2–3 above), then PR #1 is merged (step 5). All work to that point is done and parked on PR #1.
 - **Newer stack:** Next 16 / React 19 / Tailwind v4 (create-next-app itself flags breaking changes vs older Next). Watch for gotchas in UI phases.
 - **2 moderate npm advisories** from the fresh install; not auto-fixed (avoids `audit fix --force` breaking changes). Revisit only if they reach runtime deps.
 - **1.02 is blocked** on the design screenshot from Lazar (`brand.md` stays SEED until then; per CLAUDE.md, no real UI before 1.02 closes).

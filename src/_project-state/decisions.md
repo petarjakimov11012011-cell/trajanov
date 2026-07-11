@@ -121,4 +121,12 @@
 - **Decision:** Commit the reviewer as `.github/workflows/claude-code-review.yml` (official `anthropics/claude-code-action@v1`, the `pr-review-comprehensive` pattern). Make it auth-agnostic: it accepts EITHER `CLAUDE_CODE_OAUTH_TOKEN` or `ANTHROPIC_API_KEY`, and SKIPS the review step (job still succeeds, with a warning) until one secret is present, so PRs don't collect a failing check. Installing the Claude GitHub App and adding the auth secret are owed to the operator; the hard-gate review posts once auth is configured (re-run the check or push).
 - **Alternatives considered:** Run `/install-github-app` — not possible here. Hard-code one auth method — rejected: the operator hadn't settled the method, so an either-secret workflow avoids a later code edit. Let the workflow fail loudly without a secret — rejected: a red ✗ on every PR is noise and misreads as a real failure.
 - **Consequences:** The reviewer is fully wired in code and activates the moment a secret is added — no further code change. Downside: the Part 1 hard gate (a posted review) is not satisfied until the operator adds auth; this phase closes only after that review runs clean and the operator merges.
-- **Links:** Phase 1.01 brief Tasks 5.1 & 6; D-0.00-11.
+- **Links:** Phase 1.01 brief Tasks 5.1 & 6; D-0.00-11; D-1.01-5.
+
+### D-1.01-5 · 2026-07-11 · Operator did not add the Anthropic API key (reviewer auth) this phase
+- **Status:** Accepted (operator decision)
+- **Context:** The review workflow (D-1.01-4) is committed and runs on every PR but skips until a Claude auth secret (`ANTHROPIC_API_KEY` or `CLAUDE_CODE_OAUTH_TOKEN`) is set. Setting that secret means entering the operator's own credential, which the executor is not permitted to do. The operator was given the one-step path (create key at console.anthropic.com → paste as the `ANTHROPIC_API_KEY` repo secret) and chose to skip it for now.
+- **Decision:** No auth secret was added this phase. The automatic reviewer stays inactive and posts no review; Vercel connection was likewise skipped.
+- **Alternatives considered:** Add the secret now to satisfy the Part 1 hard gate — declined by the operator. Have the executor add it — not possible (entering an API key/token into a field is off-limits).
+- **Consequences:** The Part 1 hard gate (a posted Action review on the phase PR) is **not** satisfied, so PR #1 has no review to read and cannot be merged under the brief's rule yet. The phase is code-complete but not closed. When the operator later adds the secret, the workflow activates with zero code changes (re-run the check or push a commit to trigger it).
+- **Links:** Phase 1.01 brief Tasks 5–6; D-1.01-4; D-0.00-11; owed-verification register in `current-state.md`.
