@@ -4,11 +4,13 @@
 ## Repo root
 - `CLAUDE.md` — Claude Code's standing rules (behavioral contract, under 150 lines)
 - `facts.md` — verified business facts; the only legal source for factual claims on the site
-- `brand.md` — design tokens + brand rules; the only token source (seed until Phase 1.02)
+- `brand.md` — design tokens + brand rules; the only token source (FILLED at Phase 1.02)
 
 ## Process folders
 - `briefs/` — every phase brief (`Part-X-Phase-YY-<Role>.md`), saved by Lazar; versioned instruction history
 - `docs/design-handovers/` — Design → Code handover docs, one per design phase
+- `docs/design-handovers/Part-1-Phase-02-Design-Handover.md` — Phase 1.02 design system handover (component specs + strip register)
+- `docs/design-handovers/trajanov-stitch-reference/README.md` — home for the approved Stitch export; PENDING (assets owed to Lazar, see D-1.02-7)
 
 ## Project state
 - `src/_project-state/current-state.md` — live snapshot; NEXT line first; owed-verification + placeholder registers
@@ -29,13 +31,13 @@
 - `.gitignore` — ignores `node_modules/`, `.next/`, `.env*`, `.vercel`
 - `README.md` — 3-line project pointer
 
-## App (created at 1.01)
-- `src/app/layout.tsx` — root layout (fonts + `globals.css` import)
-- `src/app/page.tsx` — default create-next-app home page (untouched; replaced in a later UI phase)
-- `src/app/globals.css` — Tailwind v4 entry + shadcn theme tokens (seed only; real tokens land at 1.02)
+## App (created at 1.01, design system wired at 1.02)
+- `src/app/layout.tsx` — root layout: loads Bebas Neue + Hanken Grotesk via `next/font`, sets brand `<title>`/description, imports `globals.css`
+- `src/app/page.tsx` — minimal on-brand placeholder home (TRAJANOV wordmark + "Site in progress"); real Home lands in the first UI phase (see D-1.02-6)
+- `src/app/globals.css` — Tailwind v4 entry + Trajanov design tokens (mirrors `brand.md` §12), shadcn semantic aliases, and `.type-*` role utilities (`brand.md` §4)
 - `src/app/favicon.ico` — default favicon (placeholder)
 - `src/components/` — shared UI components
-- `src/components/ui/button.tsx` — shadcn button, auto-seeded by `init` (see D-1.01-2); unused until 1.02
+- `src/components/ui/button.tsx` — base Button, restyled to `brand.md` tokens at 1.02 (0px corners, Label-caps, white-accent primary)
 - `src/lib/utils.ts` — shadcn `cn()` class-merge helper
 - `data/products/` — one structured data file per product (format fixed at 1.04); empty, holds `.gitkeep`
 - `public/images/` — product photos and brand assets; empty, holds `.gitkeep`
