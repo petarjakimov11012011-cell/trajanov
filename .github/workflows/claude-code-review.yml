@@ -1,0 +1,58 @@
+name: Claude Code Review
+
+# Automatic PR reviewer for Trajanov — the Part 1 hard gate.
+# Runs on every pull request to `main` and posts review feedback as comments.
+#
+# Auth: a Claude subscription OAuth token, stored as the repo secret
+#   CLAUDE_CODE_OAUTH_TOKEN  (generate it with `claude setup-token`).
+# Fallback: for a pay-as-you-go Anthropic API key instead, replace the
+#   `claude_code_oauth_token:` line below with
+#   `anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}`.
+#
+# Requires the Claude GitHub App (https://github.com/apps/claude) installed on
+# this repository so the action can post comments.
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+
+jobs:
+  claude-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Claude Code Review
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          # Visual progress tracking on the PR while the review runs.
+          track_progress: true
+
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
+            Review this pull request. Follow the repository's CLAUDE.md
+            conventions and the phase brief under `briefs/` when judging scope.
+            Focus on:
+            1. Correctness — bugs, unhandled edge cases, broken behavior.
+            2. Security — input handling, secrets, auth. Flag any committed secret.
+            3. Quality — readability, maintainability, dead code, simplifications.
+            4. Consistency — does the change match the project's stated stack,
+               structure (file-map.md), and decisions (decisions.md)?
+
+            Leave specific issues as inline comments and a short summary as a
+            top-level comment. Tag anything that should block merge clearly.
+            If nothing is blocking, say so plainly.
+
+          claude_args: |
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"
