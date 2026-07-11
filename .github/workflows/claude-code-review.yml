@@ -3,14 +3,15 @@ name: Claude Code Review
 # Automatic PR reviewer for Trajanov — the Part 1 hard gate.
 # Runs on every pull request to `main` and posts review feedback as comments.
 #
-# Auth: a Claude subscription OAuth token, stored as the repo secret
-#   CLAUDE_CODE_OAUTH_TOKEN  (generate it with `claude setup-token`).
-# Fallback: for a pay-as-you-go Anthropic API key instead, replace the
-#   `claude_code_oauth_token:` line below with
-#   `anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}`.
+# Auth: add ONE of these repository secrets
+# (Settings → Secrets and variables → Actions → New repository secret):
+#   - CLAUDE_CODE_OAUTH_TOKEN  — from a Claude subscription (`claude setup-token`)
+#   - ANTHROPIC_API_KEY        — a pay-as-you-go key from console.anthropic.com
+# The workflow accepts either. Until one is set, the review step is SKIPPED
+# (the job succeeds with a warning) rather than failing on every PR.
 #
-# Requires the Claude GitHub App (https://github.com/apps/claude) installed on
-# this repository so the action can post comments.
+# Recommended: install the Claude GitHub App (https://github.com/apps/claude) on
+# this repo so review comments post as "claude" and @claude mentions work later.
 
 on:
   pull_request:
@@ -24,15 +25,32 @@ jobs:
       pull-requests: write
       id-token: write
     steps:
+      - name: Check that a Claude auth secret is configured
+        id: auth
+        env:
+          OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -n "$OAUTH_TOKEN" ] || [ -n "$API_KEY" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::warning title=Claude review skipped::No CLAUDE_CODE_OAUTH_TOKEN or ANTHROPIC_API_KEY secret set yet — add one to enable automatic review."
+          fi
+
       - name: Checkout repository
+        if: steps.auth.outputs.configured == 'true'
         uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
       - name: Claude Code Review
+        if: steps.auth.outputs.configured == 'true'
         uses: anthropics/claude-code-action@v1
         with:
+          # Whichever secret you set is used; the empty one is ignored.
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
 
           # Visual progress tracking on the PR while the review runs.
           track_progress: true
