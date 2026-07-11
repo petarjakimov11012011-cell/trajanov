@@ -2,129 +2,189 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/*
+  Trajanov design tokens.
+  The ONLY source of these values is brand.md. The block below mirrors brand.md
+  §12 verbatim — if a token must change, change it in brand.md first, then mirror
+  it here. Nothing visual is hardcoded elsewhere in the app.
+
+  The site is strictly monochrome and ALWAYS DARK: there is no light theme and no
+  theme toggle, so there is a single :root and no `.dark` block (see D-1.02-5).
+*/
+
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
-}
-
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* ===== brand.md §12 — raw tokens (source of truth) ===== */
+  /* colour */
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --surface-2: #201f1f;
+  --border: #262626;
+  --border-control: #8e9192;
+  --text: #f5f5f5;
+  --text-muted: #c6c6c7;
+  --accent: #ffffff;
+  --on-accent: #0a0a0a;
+  --error: #ffb4ab;
+  --error-surface: #93000a;
+
+  /* type families — the font faces are loaded in layout.tsx via next/font,
+     which exposes --font-bebas and --font-hanken. */
+  --font-display: var(--font-bebas), Impact, sans-serif;
+  --font-body: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+
+  /* spacing (base 4px — matches Tailwind's default 0.25rem scale) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --sp-24: 96px;
+  --sp-32: 128px;
+  --margin-desktop: 64px;
+  --margin-mobile: 20px;
+  --container-max: 1440px;
+
+  /* shape */
+  --radius: 0px;
+  --tap-min: 44px;
+
+  /* ===== shadcn semantic aliases → brand tokens =====
+     Existing ui/ primitives (button, future shadcn parts) read these names;
+     they are pointed at the brand tokens above so there is one source of truth. */
+  --background: var(--bg);
+  --foreground: var(--text);
+  --card: var(--surface);
+  --card-foreground: var(--text);
+  --popover: var(--surface-2);
+  --popover-foreground: var(--text);
+  --primary: var(--accent); /* primary action colour = white */
+  --primary-foreground: var(--on-accent);
+  --secondary: var(--surface);
+  --secondary-foreground: var(--text);
+  --muted: var(--surface);
+  --muted-foreground: var(--text-muted);
+  --accent-foreground: var(--on-accent); /* note: --accent itself is brand white */
+  --destructive: var(--error);
+  --input: var(--border-control); /* interactive control borders */
+  --ring: var(--accent); /* focus ring = white */
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+@theme inline {
+  /* fonts */
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-heading: var(--font-display);
+
+  /* colour — brand token names (bg-surface, text-text-muted, border-border-control, …) */
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-control: var(--border-control);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-error: var(--error);
+  --color-error-surface: var(--error-surface);
+
+  /* colour — shadcn semantic aliases (used by ui/ primitives) */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* shape — 0px everywhere, driven by the --radius token */
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+  --radius-2xl: var(--radius);
+  --radius-3xl: var(--radius);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
-    @apply font-sans;
+    @apply h-full font-sans;
+  }
+  body {
+    @apply min-h-full bg-background text-foreground antialiased;
+  }
+}
+
+/*
+  Type roles — brand.md §4. One class per role; hierarchy comes from
+  weight + colour + scale, not from inventing new styles. Product names use
+  `.type-body-md font-bold` (Body-MD 700).
+*/
+@layer components {
+  .type-display-xl {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 60px;
+    letter-spacing: -0.01em;
+  }
+  @media (min-width: 768px) {
+    .type-display-xl {
+      font-size: 120px;
+      line-height: 100px;
+      letter-spacing: -0.02em;
+    }
+  }
+  .type-headline-lg {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 48px;
+    letter-spacing: 0.02em;
+  }
+  .type-body-lg {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: 0.01em;
+  }
+  .type-body-md {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.01em;
+  }
+  .type-label {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 16px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .type-nav {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.05em;
   }
 }

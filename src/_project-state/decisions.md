@@ -138,3 +138,67 @@
 - **Alternatives considered:** Add the auth secret and get a clean review first (the intended path) — declined. Operator merges via the GitHub UI themselves — declined in favor of the executor doing it.
 - **Consequences:** `main` now contains the scaffold; the Part 1 hard gate (a posted review) was **waived** for this phase and never exercised. The review workflow stays committed and will run on future PRs once a secret is added. Two `CLAUDE.md` rules were overridden by explicit instruction: "never merge a PR yourself" and "merge after the Action review posts." This is a one-off override, not a precedent for later phases.
 - **Links:** Phase 1.01 brief Task 6; D-1.01-5; D-1.01-4; `CLAUDE.md` Branch & PR rules.
+
+### D-1.02-1 · 2026-07-12 · Design tool = Google Stitch (replaces Claude Design for this phase)
+- **Status:** Accepted (orchestrator call)
+- **Context:** The design needed to be produced from the approved screenshot in a way that fits the no-coding workflow and exports something that maps onto `brand.md`.
+- **Decision:** Generate the design in **Google Stitch** (not Claude Design) for Phase 1.02; the orchestrator reconciles its output into `brand.md` + the handover.
+- **Alternatives considered:** Claude Design — set aside for this phase in favour of Stitch's screenshot-to-design fit and its `DESIGN.md` export.
+- **Consequences:** Usable structure fast; downside: Stitch's raw output needed manual reconciliation (two overlapping colour lists, a rounded-corner drift, Material icons instead of Lucide, and invented luxury copy that violates content-truth/scope) — all corrected in `brand.md` and the handover strip register.
+- **Links:** `docs/design-handovers/Part-1-Phase-02-Design-Handover.md`.
+
+### D-1.02-2 · 2026-07-12 · Palette reconciled to one AA-verified monochrome set
+- **Status:** Accepted (orchestrator call)
+- **Context:** Stitch shipped two overlapping colour lists; a single intentional palette was needed, with every text/UI pair meeting WCAG 2.2 AA.
+- **Decision:** One monochrome set — `#0A0A0A` ink / `#F5F5F5` text / `#FFFFFF` accent, plus a hairline (`#262626`) vs. control-outline (`#8E9192`) border system — recorded in `brand.md` §3 and contrast-checked.
+- **Alternatives considered:** Keep Stitch's dual lists — rejected: ambiguous source of truth and at least one border colour failed contrast (`#262626` at 1.3:1).
+- **Consequences:** One unambiguous, accessible palette; downside: none identified. The `#262626` hairline is decorative-only and must never be the sole border on an interactive control (enforced in `brand.md` §10).
+- **Links:** `brand.md` §3, §10.
+
+### D-1.02-3 · 2026-07-12 · Type = Bebas Neue (display) + Hanken Grotesk (body)
+- **Status:** Accepted (orchestrator call)
+- **Context:** The look needs extreme scale contrast — a condensed display face against a clean grotesque body face — with two families only.
+- **Decision:** Bebas Neue for display, Hanken Grotesk for body; loaded via `next/font/google` (self-hosted at build). Roles fixed in `brand.md` §4.
+- **Alternatives considered:** A single family with weight contrast — rejected: doesn't deliver the condensed-headline motif that carries the brand.
+- **Consequences:** The "wall of type" motif is achievable; downside/flag: **Cyrillic coverage of both faces must be verified before the Macedonian future phase** (ties D-0.00-7); a substitute is chosen there if a face lacks Cyrillic.
+- **Links:** `brand.md` §4; D-0.00-7.
+
+### D-1.02-4 · 2026-07-12 · Monochrome; pure white is the only accent
+- **Status:** Accepted (owner-agreed direction)
+- **Context:** Whether to introduce any chromatic accent.
+- **Decision:** Strictly monochrome — pure white (`#FFFFFF`) is the single accent, reserved for the primary action and active/selected states; colour is never the only carrier of meaning.
+- **Alternatives considered:** A chromatic accent (a brand colour) — rejected: dilutes the gallery/editorial direction and the "spend your boldness in one place" motif.
+- **Consequences:** Cohesive, disciplined look; downside: state must always also use weight/label/shape (not colour alone) — already required by the AA rules, so no extra cost.
+- **Links:** `brand.md` §3, §11.
+
+### D-1.02-5 · 2026-07-12 · Token architecture: single always-dark theme; shadcn names aliased to brand tokens
+- **Status:** Accepted (executor call)
+- **Context:** `brand.md`'s palette is a dark monochrome with no light variant, but the scaffold's `globals.css` shipped shadcn's light `:root` + `.dark` split and a large set of semantic/sidebar/chart tokens. The app's primitives (currently `ui/button.tsx`) read shadcn's semantic names (`--primary`, `--muted`, `--ring`, …).
+- **Decision:** Make `brand.md` §12 the source values in a single `:root` (no `.dark` block, no theme toggle), then alias shadcn's semantic names onto those brand tokens and expose both brand-named (`bg-surface`, `border-border-control`, `text-error`) and shadcn-named (`bg-primary`, `text-muted-foreground`) Tailwind utilities via `@theme inline`. Dropped the unused sidebar/chart token families. Also added `.type-*` utility classes for the `brand.md` §4 type roles.
+- **Alternatives considered:** Keep the light/dark split and only edit `.dark` — rejected: the site is never light, so a light `:root` is dead weight and a foot-gun. Rename every shadcn token to brand names and rewrite the button from scratch — rejected: more churn than aliasing, and future `shadcn add` components expect the semantic names.
+- **Consequences:** One source of truth, one theme, both naming styles available; `brand.md` stays the only place a value changes. Downsides: shadcn's `--accent` semantic (a subtle hover bg) now equals brand white, so future components must use `bg-surface`/`bg-surface-2` for quiet hovers, not `bg-accent`; and components' `dark:` variants are inert (there is no `.dark` ancestor) — acceptable and documented here.
+- **Links:** `brand.md` §12, §4; `src/app/globals.css`; `src/components/ui/button.tsx`.
+
+### D-1.02-6 · 2026-07-12 · Scope: Phase 1.02 executed as design-system-in-code, no product/section UI
+- **Status:** Accepted (executor call, operator ratified "do what you recommend")
+- **Context:** No `briefs/Part-1-Phase-1.02-*.md` code brief was handed over — only the design handover. `current-state.md` says "no real UI may be written until 1.02 closes" and `file-map.md` says "real tokens land at 1.02" and the button is "restyled at 1.02," but neither names page/section work for this phase.
+- **Decision:** Execute 1.02 as the code layer of the design system only — wire `brand.md` tokens into `globals.css`, load the fonts, restyle the base `Button`, add the type-role utilities, file the handover, log these decisions, and do the state duties. Defer all product/section UI (Header, Footer, ProductCard, real pages) to the later UI phases. To satisfy the render-before-close UI rule, the create-next-app home page was replaced with a **minimal on-brand placeholder** (the TRAJANOV wordmark + a "Site in progress" Label-caps line) — no product content invented.
+- **Alternatives considered:** Docs-only (file the handover, no code) — rejected: contradicts "real tokens land at 1.02." Also build the component shells + page scaffolds — rejected: that is the next UI phase's work and would pre-empt its brief.
+- **Consequences:** The design system is real, renderable, and verified (build ✅, lint ✅, screenshot ✅) without pre-empting later phases. Downside: the home route shows a placeholder until the first UI phase replaces it.
+- **Links:** `current-state.md`; `file-map.md`; `src/app/page.tsx`; Phase 1.02 handover §1–§2.
+
+### D-1.02-7 · 2026-07-12 · Stitch visual-reference assets absent — proceeded from tokens, registered as owed
+- **Status:** Accepted (executor call, operator ratified "do what you recommend")
+- **Context:** The handover's visual reference (the `trajanov-stitch-reference/` `screen.png` + `code.html` + `DESIGN.md`) was not present in the repo, in the handover, or anywhere on disk (`~/Downloads`, `~/Desktop`, `~/Documents` searched).
+- **Decision:** Build the design system from `brand.md` + the handover text (the tokens are authoritative anyway), create `docs/design-handovers/trajanov-stitch-reference/` with a `README.md` marking the export PENDING, and add "supply the Stitch export" to the owed-verification register. Nothing was invented to stand in for the renders.
+- **Alternatives considered:** Fabricate placeholder renders — rejected outright (content-truth). Skip the folder entirely — rejected: it would lose the pointer that the reference is owed.
+- **Consequences:** No blockage — the tokens are enough to implement against; downside: the intended-look renders aren't in the repo for cross-checking until Lazar supplies them.
+- **Links:** `docs/design-handovers/trajanov-stitch-reference/README.md`; `current-state.md` owed-verification register.
+
+### D-1.02-8 · 2026-07-12 · PR #2 merged to `main` without a review (operator override — second occurrence)
+- **Status:** Accepted (operator decision — explicit override)
+- **Context:** `CLAUDE.md` requires the operator (not the executor) to merge, and only after the GitHub Action review posts. The reviewer skipped again on PR #2 (no auth secret set since 1.01 — D-1.01-5; confirmed: 0 comments / 0 reviews, 4s run, green by skip-gracefully design). The executor surfaced the conflict and offered the compliant paths (operator clicks Merge; or add the secret so a real review runs first); the operator explicitly directed the executor to merge via CLI anyway.
+- **Decision:** Squash-merge `phase-1.02-design-system` into `main` with no review, executed by the executor at the operator's explicit direction.
+- **Alternatives considered:** Operator merges via the GitHub UI (rule-compliant) — declined. Add the auth secret and get the intended hard-gate review first — declined.
+- **Consequences:** `main` now holds Phase 1.02; the Part 1 hard-gate review was waived again. This is the **second** override of these rules after D-1.01-6 framed the first as "one-off, not a precedent" — so in practice the "executor never merges / merge only after review" contract is not being enforced in Part 1. The reviewer still activates automatically once a secret is added; strongly recommend adding it before the next phase so the gate actually runs.
+- **Links:** D-1.01-6; D-1.01-5; D-1.01-4; `CLAUDE.md` Branch & PR rules; PR #2.

@@ -34,3 +34,14 @@ Machine: Petar's MacBook (macOS, Darwin 25.5.0). Scaffolded with `create-next-ap
 - **Not yet installed** (pinned at first use, per plan): `motion`, `resend` (1.05 stub / 2.01 live), `@vercel/analytics` (2.02).
 
 Note: `create-next-app@latest` resolved to the **Next 16 / React 19** line (newer than the `next@15` illustration above). Kept as-is — it is the current create-next-app default and the brief specified "defaults."
+
+## 2026-07-12 — Phase 1.02 design system: tokens + fonts wired (no new npm dependencies)
+
+Machine: Petar's MacBook. Node/npm and all package versions unchanged from the 1.01 entry — **nothing was added to `package.json`.**
+
+- **Fonts:** loaded with the built-in `next/font/google` (no package to pin; faces are fetched and self-hosted at build):
+  - **Bebas Neue** — display face, weight `400` (its only weight), `latin` subset, CSS var `--font-bebas`.
+  - **Hanken Grotesk** — body face, variable (covers 400/500/700), `latin` subset, CSS var `--font-hanken`.
+  - `latin` subset only at launch; **Cyrillic coverage owed before the Macedonian phase** (D-1.02-3 / D-0.00-7).
+- **Design tokens:** `brand.md` §12 mirrored into `src/app/globals.css` (`:root`), with shadcn semantic names aliased onto the brand tokens and both naming styles exposed via Tailwind v4 `@theme inline`; single always-dark theme, no `.dark` block (D-1.02-5). No `tailwind.config` file (v4 config lives in `globals.css`).
+- **Build note:** `next/font` requires network access at build time to fetch the Google Fonts (verified working: `npm run build` ✓).
