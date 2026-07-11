@@ -130,3 +130,11 @@
 - **Alternatives considered:** Add the secret now to satisfy the Part 1 hard gate — declined by the operator. Have the executor add it — not possible (entering an API key/token into a field is off-limits).
 - **Consequences:** The Part 1 hard gate (a posted Action review on the phase PR) is **not** satisfied, so PR #1 has no review to read and cannot be merged under the brief's rule yet. The phase is code-complete but not closed. When the operator later adds the secret, the workflow activates with zero code changes (re-run the check or push a commit to trigger it).
 - **Links:** Phase 1.01 brief Tasks 5–6; D-1.01-4; D-0.00-11; owed-verification register in `current-state.md`.
+
+### D-1.01-6 · 2026-07-11 · PR #1 merged to `main` without a review (operator override of the Part 1 hard gate)
+- **Status:** Accepted (operator decision — explicit override)
+- **Context:** `CLAUDE.md` requires the operator (not the executor) to merge, and only after the GitHub Action review posts. No review ran this phase because the auth secret was not added (D-1.01-5). When the executor surfaced this conflict, the operator explicitly instructed it to merge PR #1 to `main` now and confirmed the override.
+- **Decision:** Squash-merge `phase-1.01-scaffold` into `main` with no review, executed by the executor at the operator's explicit direction.
+- **Alternatives considered:** Add the auth secret and get a clean review first (the intended path) — declined. Operator merges via the GitHub UI themselves — declined in favor of the executor doing it.
+- **Consequences:** `main` now contains the scaffold; the Part 1 hard gate (a posted review) was **waived** for this phase and never exercised. The review workflow stays committed and will run on future PRs once a secret is added. Two `CLAUDE.md` rules were overridden by explicit instruction: "never merge a PR yourself" and "merge after the Action review posts." This is a one-off override, not a precedent for later phases.
+- **Links:** Phase 1.01 brief Task 6; D-1.01-5; D-1.01-4; `CLAUDE.md` Branch & PR rules.

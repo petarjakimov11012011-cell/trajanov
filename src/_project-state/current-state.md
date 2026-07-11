@@ -21,17 +21,15 @@ See `src/_project-state/00_stack-and-config.md` (only source). Installed this ph
 - No project-specific UI, and no design tokens (`brand.md` = SEED, so per CLAUDE.md no real UI may be written until 1.02 closes).
 
 ## Integrations wired
-- Repo: github.com/petarjakimov11012011-cell/trajanov — private ✅. PR **#1** (`phase-1.01-scaffold` → `main`) open.
-- GitHub review Action (Claude Code) — workflow committed at `.github/workflows/claude-code-review.yml`; runs on every PR ✅ (ran on PR #1, `success`). It currently **skips** the review (job still passes) until a Claude auth secret is set. The operator elected **not to add the auth secret this phase** (D-1.01-5); installing the Claude GitHub App + adding the secret remain OWED. A posted review is the Part 1 hard gate — **still open**.
+- Repo: github.com/petarjakimov11012011-cell/trajanov — private ✅. PR **#1** (`phase-1.01-scaffold` → `main`) **squash-merged to `main` via operator override — no review ran (D-1.01-6)**. `main` now holds the scaffold.
+- GitHub review Action (Claude Code) — workflow committed at `.github/workflows/claude-code-review.yml`; runs on every PR ✅. It **skips** until a Claude auth secret is set. No secret was added this phase (D-1.01-5), so it never reviewed PR #1 and the Part 1 hard gate was **waived** for 1.01 (D-1.01-6). The workflow stays in place and will review **future** PRs the moment `ANTHROPIC_API_KEY` (or `CLAUDE_CODE_OAUTH_TOKEN`) is added.
 - Vercel Pro — **not yet connected** (operator skipped this phase, D-1.01-5); import + deploy is a browser step OWED to the operator. Once connected: per-PR preview URLs (D-0.00-11); production deploys `main` (README only until PR #1 merges), so the default page shows on the PR **preview** deployment until then.
 
 ## Owed-verification register
 *(Checks the executor could not perform and owes to Lazar — in-browser checks, real-inbox tests. At 3+ items, the next phase is a verification phase. These are all Phase 1.01 closeout steps; they clear when the operator completes them — see completion report §7.)*
-- Install the Claude GitHub App on the trajanov repo (github.com/apps/claude).
-- Add the reviewer's Claude auth secret (`ANTHROPIC_API_KEY` or `CLAUDE_CODE_OAUTH_TOKEN`), then re-run the review on PR #1 and confirm no blocking findings.
-- Read the Action's review on PR #1 and merge it (the executor never merges).
+- Add a Claude auth secret (`ANTHROPIC_API_KEY` or `CLAUDE_CODE_OAUTH_TOKEN`) to activate the automatic reviewer on **future** PRs (optionally install github.com/apps/claude for a "claude" identity + `@claude` mentions). PR #1 itself was merged without a review by explicit override (D-1.01-6).
 - Connect Vercel (import trajanov, deploy) and note the `*.vercel.app` URL.
-- Open the `*.vercel.app` preview URL on his own machine and confirm the default page loads.
+- Open the production URL on his own machine and confirm the default page loads once Vercel is connected.
 
 ## Placeholder register
 *(Every visible `[PLACEHOLDER: …]` on the site. Must be EMPTY before cutover — launch blocker.)*
