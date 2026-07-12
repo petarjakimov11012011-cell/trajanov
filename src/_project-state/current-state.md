@@ -31,8 +31,8 @@ The header/footer/Home link to these real, final paths; the pages arrive in thei
 - `/privacy`, `/terms` (footer legal links) → Phase 1.06
 
 ## Integrations wired
-- Repo: github.com/petarjakimov11012011-cell/trajanov — private ✅. `main` holds **Phase 1.02**; this phase (1.03) is on branch `phase-1.03-layout-home` via PR (see report for number). **Not merged by the executor** — awaiting the Action review + Lazar's merge.
-- GitHub review Action (Claude Code) — committed at `.github/workflows/claude-code-review.yml`; runs on every PR but **skips until a Claude auth secret is set** (`ANTHROPIC_API_KEY` / `CLAUDE_CODE_OAUTH_TOKEN`). As last recorded, still none (D-1.01-5) — so this PR's hard-gate review will skip unless the operator adds the secret first. **Recommend adding it before merging 1.03** so the gate finally runs (two prior phases merged with no review — D-1.01-6, D-1.02-8).
+- Repo: github.com/petarjakimov11012011-cell/trajanov — private ✅. `main` now holds **Phase 1.03** — PR **#3** (`phase-1.03-layout-home`) was squash-merged at the operator's explicit direction with **no review** (D-1.03-2), the third such override after D-1.01-6 and D-1.02-8.
+- GitHub review Action (Claude Code) — committed at `.github/workflows/claude-code-review.yml`; runs on every PR but **skips until a Claude auth secret is set** (`ANTHROPIC_API_KEY` / `CLAUDE_CODE_OAUTH_TOKEN`). As last recorded, still none (D-1.01-5) — so PR #3 got no hard-gate review. **Recommend adding the secret before 1.04** so the gate finally runs at least once (three phases have now merged with no review — D-1.01-6, D-1.02-8, D-1.03-2).
 - Vercel Pro — connection state unverified from here (was skipped at 1.01, D-1.01-5). If connected, this PR gets a `*.vercel.app` preview URL; otherwise the preview link / Home eyeball is owed (see register). Executor cannot verify account state from the repo.
 
 ## Owed-verification register
