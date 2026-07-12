@@ -3,12 +3,14 @@ NEXT: 1.04 — Products + Catalog + Product page
 # current-state.md — Trajanov
 *This snapshot gets OVERWRITTEN — it mirrors the repo as it is right now, never the plan. Code updates it (including the NEXT line above) when closing every phase. If plan and code disagree, this file follows the code and the mismatch is surfaced.*
 
-**Last updated:** 2026-07-12 (Phase 1.03 — Layout + Home)
+**Last updated:** 2026-07-12 (Phase 1.03b — Cowork: Verify & Unblock)
 
 ## Summary (plain language)
-- Works now: the site finally looks like a storefront. Every page carries a shared **header** (the TRAJANOV wordmark, CATALOG/CONTACT links, a cart icon, and a mobile menu) and a shared **footer** (wordmark, Instagram link, Privacy/Terms, © 2026 Trajanov). The **Home page** is real: a large "wall of type" TRAJANOV hero, the line "Clothing, sold direct. Cash on delivery.", a white VIEW CATALOG button, and a FEATURED section that currently reads "Catalog coming soon." All dark, monochrome, sharp-cornered — on brand.
+- **The site is live at https://trajanov.vercel.app** — Vercel is connected and rebuilds automatically on every push to `main`. Anyone can now see the site on a real URL instead of one person's localhost.
+- **⚠️ It is deployed on a Vercel Hobby account, not Pro.** The plan assumed "Vercel Pro (already paid)" — that is not true, no Pro team exists. D-0.00-3 explicitly *rejected* Hobby (commercial use is against Vercel's ToS; deployments can be pulled without notice). **This is a launch blocker awaiting an owner decision — see Known issues and D-1.03b-1.**
+- Works now: the site looks like a storefront. Every page carries a shared **header** (the TRAJANOV wordmark, CATALOG/CONTACT links, a cart icon, and a mobile menu) and a shared **footer** (wordmark, Instagram link, Privacy/Terms, © 2026 Trajanov). The **Home page** is real: a large "wall of type" TRAJANOV hero, the line "Clothing, sold direct. Cash on delivery.", a white VIEW CATALOG button, and a FEATURED section that currently reads "Catalog coming soon." All dark, monochrome, sharp-cornered — on brand, and now confirmed so on the live URL.
 - Not built yet: the catalog grid, product pages, cart, order form, product data, contact/legal page content, and email. Several links point at pages that do not exist yet and 404 on purpose (see "Expected 404s" below).
-- Current phase: 1.03 (Layout + Home), closing.
+- Current phase: 1.03b (Cowork verification phase), closing. It shipped no application code.
 - Next: 1.04 — Products + Catalog + Product page (blocked on real product photos/names/prices from Vaki).
 
 ## Current stack
@@ -32,23 +34,27 @@ The header/footer/Home link to these real, final paths; the pages arrive in thei
 
 ## Integrations wired
 - Repo: github.com/petarjakimov11012011-cell/trajanov — private ✅. `main` now holds **Phase 1.03** — PR **#3** (`phase-1.03-layout-home`) was squash-merged at the operator's explicit direction with **no review** (D-1.03-2), the third such override after D-1.01-6 and D-1.02-8.
-- GitHub review Action (Claude Code) — committed at `.github/workflows/claude-code-review.yml`; runs on every PR but **skips until a Claude auth secret is set** (`ANTHROPIC_API_KEY` / `CLAUDE_CODE_OAUTH_TOKEN`). As last recorded, still none (D-1.01-5) — so PR #3 got no hard-gate review. **Recommend adding the secret before 1.04** so the gate finally runs at least once (three phases have now merged with no review — D-1.01-6, D-1.02-8, D-1.03-2).
-- Vercel Pro — connection state unverified from here (was skipped at 1.01, D-1.01-5). If connected, this PR gets a `*.vercel.app` preview URL; otherwise the preview link / Home eyeball is owed (see register). Executor cannot verify account state from the repo.
+- GitHub review Action (Claude Code) — committed at `.github/workflows/claude-code-review.yml`; runs on every PR but **still skips: no auth secret set.** Both options (Anthropic API key / Claude Code OAuth token) were put to the operator in 1.03b and **deferred to Phase 1.07** (D-1.03b-2). Consequence: **1.04 will merge unreviewed too** — that will be four phases with zero review (D-1.01-6, D-1.02-8, D-1.03-2). The gate activates automatically the moment a secret is added.
+- **Vercel — CONNECTED ✅ (1.03b).** Project `trajanov` under the "Petar Jakimov Projects" team, linked to `petarjakimov11012011-cell/trajanov`, auto-deploying `main`. **Live URL: https://trajanov.vercel.app.** The Vercel GitHub app is scoped to the `trajanov` repo only. **⚠️ The team is on the Hobby plan, NOT Pro — see Known issues + D-1.03b-1. This is a launch blocker.**
 
 ## Owed-verification register
 *(Checks the executor could not perform and owes to Lazar — in-browser checks, real-inbox tests, owner ratifications.)*
-- **New this phase (1.03):**
-  - **Eyeball the rendered Home + shell** on a preview link (or `localhost`). The executor verified it on `localhost:3000` at desktop (1280px) and mobile (375px) — see the completion report §2/§7 for evidence — but Lazar's own eyeball is owed. 5-item checklist for Lazar: (1) the hero reads as the wall of type, not a generic banner; (2) everything is monochrome with sharp corners; (3) header + footer look intentional and uncluttered; (4) the mobile menu opens and closes cleanly; (5) nothing hypey or invented appears. Provide a `*.vercel.app` preview URL if Vercel is connected; otherwise capture Home desktop+mobile screenshots for the record.
-  - Full Lighthouse 95+ and a formal WCAG 2.2 AA audit are owed to the Part-1 verification phase (1.07) on a deployed URL — nothing seen this phase looks likely to fail (focus rings, tap targets, contrast, reduced-motion all implemented and spot-checked in-browser).
+- **New this phase (1.03b):**
+  - **Decide the Vercel Hobby → Pro question** (owner-level, money). Blocks launch. See Known issues + D-1.03b-1.
+  - **Look at the site on an actual phone** and capture the desktop + mobile screenshots for the record. Cowork could not render below desktop width (viewport stayed pinned at 1408px), so **the mobile *visual* has still never been seen by anyone** — only its DOM behaviour was verified. Open https://trajanov.vercel.app on a phone: does the hero still read as a wall of type at that width, and does the menu open/close cleanly by touch?
+- **Resolved this phase (1.03b) — was owed from 1.03:**
+  - ~~Eyeball the rendered Home + shell~~ — **DONE on the live URL.** All 5 checks pass. (1) hero = wall of type ✅; (2) monochrome + sharp corners ✅ — verified programmatically: zero elements with non-zero border-radius, zero colours with any chroma; (3) header + footer intentional ✅; (4) mobile menu opens/closes cleanly ✅ — verified in the DOM: toggle sets `aria-expanded` + body scroll lock, a dedicated Close button *and* Escape both release it; (5) nothing hypey or invented ✅ — full page text audited, `© 2026` correct, no fake shipping/returns/products. Footer's Instagram link re-checked against `facts.md`: **VERIFIED**, legitimate. Caveat: the phone-width *look* remains unseen — re-registered above.
+  - ~~Connect Vercel and note the `*.vercel.app` URL~~ — **DONE** (with the Hobby caveat above).
+- **Still owed to 1.07:**
+  - Full Lighthouse 95+ and a formal WCAG 2.2 AA audit, on the deployed URL — nothing seen so far looks likely to fail (focus rings, tap targets, contrast, reduced-motion all implemented and spot-checked). Now unblocked: a deployed URL finally exists.
 - **Carried from 1.02:**
   - Ratify the Voice & tone proposal in `brand.md` §9.
   - Confirm the logo: does Vaki have a logo file, or is the Bebas Neue TRAJANOV wordmark the logo? (This phase uses the wordmark as the logo — decision 5.)
   - Supply the approved Stitch export into `docs/design-handovers/trajanov-stitch-reference/` (assets did not arrive — D-1.02-7).
   - Verify Bebas Neue + Hanken Grotesk **Cyrillic** coverage before the Macedonian phase (D-1.02-3).
   - Final SEO title/description copy is provisional ("Trajanov clothing store.") — owed a real pass at a content/SEO phase.
-- **Carried from 1.01 (state as last recorded; operator may have since done these):**
-  - Add a Claude auth secret to activate the automatic reviewer. **Priority: add before merging 1.03 so the hard gate runs (two phases already merged with no review — D-1.01-6, D-1.02-8).**
-  - Connect Vercel (import trajanov, deploy) and note the `*.vercel.app` URL.
+- **Carried from 1.01:**
+  - Add a Claude auth secret to activate the automatic reviewer. **Offered in 1.03b and deferred by the operator to 1.07 (D-1.03b-2).** Three phases have merged with no review; 1.04 will be the fourth. The gate has never once run.
 
 ## Placeholder register
 *(Every visible `[PLACEHOLDER: …]` on the site. Must be EMPTY before cutover — launch blocker.)*
@@ -63,6 +69,7 @@ The header/footer/Home link to these real, final paths; the pages arrive in thei
 - trajanov.com availability check (parallel track) → feeds 2.03.
 
 ## Known issues
+- **🔴 LAUNCH BLOCKER — the site is hosted on Vercel Hobby, the plan this project explicitly rejected.** D-0.00-3 ruled Hobby out for three reasons: Vercel's ToS restrict it to **non-commercial personal use**; Hobby deployments **can be shut down without notice**; and Hobby content **may be used for AI training**. It concluded "Team already pays for Vercel Pro" — **that is false.** The only Vercel team is "Petar Jakimov Projects", on Hobby. So a commercial clothing store is now live, publicly reachable, on exactly the plan that was ruled out, for exactly the risks named. Deployed anyway (with the operator's explicit in-session approval) because it cost nothing, is reversible, and was the only way to unblock this verification phase. **Needs an owner decision before more is built on this URL or anything is shown to Vaki.** Routes: (1) upgrade to Pro — the original decision; (2) keep Hobby as a *private* preview and treat launch as blocked (note: it is public right now); (3) genuinely revisit D-0.00-3 — it rejected the orchestrator's Netlify-free recommendation (commercial use permitted, $0) *on the grounds that Pro was already paid*, and that ground has collapsed. The project instructions' "running cost" line also needs correcting. See D-1.03b-1.
 - `npm install` reports 2 moderate-severity advisories in the transitive dependency tree (fresh create-next-app install). Unchanged since 1.01; not addressed. Revisit only if they reach runtime deps.
 - Stack is Next 16 / React 19 / Tailwind v4 (newer than the plan's Next 15 illustration). Watch for breaking-change gotchas in UI phases.
 - `next/font` fetches Google Fonts at **build time** — a build with no network (or a Google Fonts rate-limit) fails on the font step. Seen again this phase: `npm run build` failed once on the font fetch, then passed on retry. Not a code issue; both `build` and `lint` pass with network.
