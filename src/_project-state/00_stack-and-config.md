@@ -62,3 +62,13 @@ Machine: Petar's MacBook. First npm dependency added since the 1.01 scaffold.
 - **No other dependencies.** The cart store uses React context + `localStorage` (via `useSyncExternalStore`) only — **no state-management library** was added (brief Task 5). No animation library (`motion` still deferred); transitions are CSS only, gated by `motion-reduce:*`.
 - `npm install` still reports the same 2 moderate advisories in the transitive tree (unchanged since 1.01; not in runtime deps).
 - Node/npm and all other package versions unchanged from the 1.01 entry.
+
+## 2026-07-12 — Phase 1.05 cart + order flow: NO new npm dependency
+
+Machine: Petar's MacBook. Node/npm and all package versions unchanged from the 1.01/1.04a entries — **nothing was added to `package.json`.**
+
+- **`resend` NOT installed — deferred from 1.05 to 2.01 (D-1.05-2).** The order-send is a stub this phase: `sendOrder(payload)` in `src/lib/order.ts` makes no network call and uses no secret, so a stub needs no SDK. The `resend` SDK is pinned and installed at 2.01 when the real send lands (replacing the marked `// Phase 2.01` stub body). The stack table's "Order email: resend SDK — pin at 1.05 (stub) / 2.01 (live)" line resolves to: **1.05 = stub, no install; 2.01 = install + live.**
+- **Submission is server-side** via a Next.js server action (`src/app/order/actions.ts`, `"use server"`) that calls `sendOrder`. This is what lets 2.01 drop a server-only secret into `sendOrder` with no client change. No route handler / API route file added.
+- **`ORDER_STUB_FAIL` env flag (server-side only, deterministic failure switch).** `sendOrder` returns failure when `process.env.ORDER_STUB_FAIL === "true"` (unset = success), so the send-failure path is testable. It is **not** `NEXT_PUBLIC_`-prefixed, so it is undefined in the client bundle — server-only by construction. It belongs in Vercel/`.env.local` only if a deployed failure demo is wanted; it is unset (success) by default and is **not** committed anywhere. No `.env*` file was added (`.env*` stays gitignored).
+- **No animation library** (`motion` still deferred); transitions are CSS only, gated by `motion-reduce:*`.
+- Node/npm and all other package versions unchanged.
