@@ -1,0 +1,14 @@
+{
+  "name": "Wool overcoat",
+  "price": 14290,
+  "currency": "MKD",
+  "images": [
+    { "src": "/images/products/_example-front.jpg", "alt": "Wool overcoat, front view" },
+    { "src": "/images/products/_example-back.jpg", "alt": "Wool overcoat, back view" }
+  ],
+  "sizes": ["S", "M", "L", "XL"],
+  "colors": ["Black", "Grey"],
+  "inStock": true,
+  "description": "Wool overcoat with a straight, structured cut and a concealed button placket. Fully lined.",
+  "featured": false
+}

@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Menu, ShoppingBag, X } from "lucide-react";
 
+import { useCart } from "@/lib/cart";
+
 // Shared site header — brand.md §2/§4/§6/§10 + Phase 1.03 brief Task 3.
 // Sticky, solid Ink background (no blur), a bottom hairline divider, the
 // TRAJANOV wordmark, inline nav on desktop, and a focus-trapped panel behind the
@@ -22,8 +24,13 @@ const FOCUS_RING =
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const { count, hydrated } = useCart();
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
+
+  // The badge only reads a real count after the cart hydrates from localStorage
+  // (see cart.tsx) — before that both server and client render 0, no badge.
+  const showBadge = hydrated && count > 0;
 
   // Close and hand focus back to the toggle that opened the panel.
   const close = useCallback(() => {
@@ -118,10 +125,22 @@ export function Header() {
         <div className="flex items-center gap-1 md:justify-self-end">
           <Link
             href="/cart"
-            aria-label="Cart"
-            className={`inline-flex size-11 items-center justify-center text-text transition-colors hover:text-text-muted motion-reduce:transition-none ${FOCUS_RING}`}
+            aria-label={
+              showBadge
+                ? `Cart, ${count} item${count === 1 ? "" : "s"}`
+                : "Cart"
+            }
+            className={`relative inline-flex size-11 items-center justify-center text-text transition-colors hover:text-text-muted motion-reduce:transition-none ${FOCUS_RING}`}
           >
             <ShoppingBag className="size-5" aria-hidden="true" />
+            {showBadge && (
+              <span
+                aria-hidden="true"
+                className="absolute right-1 top-1 inline-flex min-w-4 items-center justify-center bg-accent px-1 py-px text-[10px] font-bold leading-none text-on-accent"
+              >
+                {count > 9 ? "9+" : count}
+              </span>
+            )}
           </Link>
           <button
             ref={toggleRef}

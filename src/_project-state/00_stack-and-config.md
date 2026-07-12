@@ -53,3 +53,12 @@ Machine: Petar's MacBook. Node/npm and all package versions unchanged from the 1
 - **Icons:** first real use of the already-installed **lucide-react@1.24.0** — `ShoppingBag` (cart), `Menu` (mobile toggle), `X` (panel close) in `src/components/header.tsx`. No new package.
 - **No animation library:** `motion` still not installed (deferred to first use per plan). Shell hover/focus uses CSS transitions only, gated by `motion-reduce:transition-none` (`brand.md` §8).
 - **Build note (recurring):** `next build` failed once this phase on `next/font` fetching Google Fonts (transient network/rate-limit), then passed on retry — the same network-dependent font-fetch behaviour recorded at 1.02, not a code issue.
+
+## 2026-07-12 — Phase 1.04a products engine: added `zod`
+
+Machine: Petar's MacBook. First npm dependency added since the 1.01 scaffold.
+
+- **zod@4.4.3** — pinned **EXACT** (no caret; installed via `npm i -E zod@4.4.3`). Why: build-time validation of the per-product JSON files (`data/products/*.json`) so a malformed product fails `next build` with a human-readable message naming the file + field, for a non-coding team (D-1.04a-2). Used only server-side in `src/lib/products.ts`. Phase 1.04a.
+- **No other dependencies.** The cart store uses React context + `localStorage` (via `useSyncExternalStore`) only — **no state-management library** was added (brief Task 5). No animation library (`motion` still deferred); transitions are CSS only, gated by `motion-reduce:*`.
+- `npm install` still reports the same 2 moderate advisories in the transitive tree (unchanged since 1.01; not in runtime deps).
+- Node/npm and all other package versions unchanged from the 1.01 entry.
