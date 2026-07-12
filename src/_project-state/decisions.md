@@ -234,3 +234,35 @@
 - **Alternatives considered:** Add the OAuth token now — offered as the recommended option (no billing setup required) and declined. Add the API key now — offered and declined.
 - **Consequences:** The hard-gate review stays dead. PRs #1, #2 and #3 all merged with no review (D-1.01-6, D-1.02-8, D-1.03-2), and **1.04 — the largest code phase so far, introducing real product data, the catalog and product pages — will now merge unreviewed as well.** The stated review gate exists because Lazar is a solo merger who cannot review his own PRs; four phases in, that gate has never once run. Deferring to 1.07 means it would first run *after* all of Part 1's code is already on `main`, which is close to no gate at all. Reversible at any time: the Action activates automatically the moment the secret is added.
 - **Links:** D-1.01-4; D-1.01-5; D-1.01-6; D-1.02-8; D-1.03-2; Phase 1.03b brief Task 1.
+
+### D-1.04a-1 · 2026-07-12 · Phase 1.04 split into 1.04a (engine) + 1.04b (real data)
+- **Status:** Accepted (owner-ratified; recorded by executor per brief)
+- **Context:** Phase 1.04 as planned bundled the products *engine* (data format, catalog page, product page, cart) with the *real product content* (photos, names, prices) that only Vaki can supply. That content had not arrived, so the whole phase was blocked on an external dependency.
+- **Decision:** Split 1.04 into **1.04a** — build the engine now with zero real products — and **1.04b** — drop in Vaki's real products once they arrive (a short follow-up phase). This phase is 1.04a.
+- **Alternatives considered:** Keep 1.04 as one phase — rejected: it would sit blocked on Vaki, stalling everything downstream (including 1.05, the cart/order flow, which only needs the engine). 
+- **Consequences:** Product data leaves the critical path; the shop can be filled in one small phase the moment photos land, and 1.05 is unblocked to run in parallel with 1.04b. Downside: two phases and two PRs instead of one, and the catalog ships publicly empty (a deliberate, honest "Products coming soon." state) until 1.04b.
+- **Links:** Phase 1.04a brief; D-0.00-6; `current-state.md` NEXT line.
+
+### D-1.04a-2 · 2026-07-12 · Product data format = one JSON file per product + Zod validation + `_`-ignore convention
+- **Status:** Accepted (baked into the 1.04a brief; recorded by executor)
+- **Context:** Products need a storage format a non-coding team edits via Claude Code (no CMS — D-0.00-2), that fails loudly and legibly when a file is wrong.
+- **Decision:** One JSON file per product in `data/products/`; the filename is the URL slug. A TypeScript type plus a **Zod** schema validate every file at load; a malformed file fails the build with a message naming the file and the offending field. Files whose name starts with `_` are ignored by the loader, so `data/products/_example.json` documents the format and is the fill-against template without ever rendering.
+- **Alternatives considered:** TS/TSX modules per product — rejected: a syntax slip is a hard compiler error with a stack trace, not a friendly "field X is wrong" message, and it invites logic in data. MDX — rejected: heavier, aimed at prose, overkill for structured fields.
+- **Consequences:** Friendly build-time errors for a non-coding editor (verified: a bad `price` fails with `Invalid product file "data/products/broken.json": field "price" — Invalid input: expected number, received string`); data stays pure JSON; the `_`-prefix gives a zero-render example. Downside: one dependency added (`zod`), and JSON has no comments, so the format is documented in `_example.json` + the loader header + `file-map.md` rather than inline.
+- **Links:** Phase 1.04a brief Task 1; `src/lib/products.ts`; `data/products/_example.json`; D-0.00-2.
+
+### D-1.04a-3 · 2026-07-12 · Colour options render as text chips of the colour name, not swatches
+- **Status:** Accepted (baked into the 1.04a brief; recorded by executor)
+- **Context:** The product page needs a colour picker, but the brand is strictly monochrome (D-1.02-4) and colour must **never** be the only carrier of meaning (brand.md §3/§10).
+- **Decision:** Render each colour option as a **text chip of the colour name** (e.g. `BLACK`, `GREY`), using the exact same chip pattern and selected/unselected cues as the size chips (unselected = `--border-control`; selected = white border + bold), **not** as coloured swatches.
+- **Alternatives considered:** Grayscale swatches — rejected: a grey square for "Grey" and a grey square for "Black" are indistinguishable and meaningless. Real-colour dots — rejected: they would break the monochrome palette and lean on colour as the sole cue, failing the AA rule.
+- **Consequences:** Colour is legible, on-brand, and never colour-only; sizes and colours share one accessible component. Downside: a shopper sees the colour *name*, not a visual sample — acceptable given the monochrome direction and that names are unambiguous.
+- **Links:** Phase 1.04a brief Task 4; `src/components/products/product-detail.tsx`; brand.md §3/§10; D-1.02-4.
+
+### D-1.04a-4 · 2026-07-12 · PR #5 merged to `main` without a review (operator override — fourth executor-merge)
+- **Status:** Accepted (operator decision — explicit override)
+- **Context:** `CLAUDE.md` requires the operator (not the executor) to merge, and only after the GitHub Action review posts. The reviewer still skips (no auth secret since 1.01 — D-1.01-5; deferred to 1.07 — D-1.03b-2). The 1.04a brief said "do not merge", so the phase was filed code-complete with PR #5 left open; the operator then explicitly instructed the executor to "merge to main." The executor surfaced the conflict and the compliant alternatives (add the auth secret so a real review runs first, or the operator merges via the GitHub UI); the instruction stood.
+- **Decision:** Squash-merge `phase-1.04a-products-engine` into `main` with no review, executed by the executor at the operator's explicit direction.
+- **Alternatives considered:** Operator merges via the GitHub UI (rule-compliant) — not chosen. Add the auth secret and get the intended hard-gate review first — not chosen.
+- **Consequences:** `main` now holds Phase 1.04a. This is the **fourth** executor merge with no review after D-1.01-6, D-1.02-8, D-1.03-2 — so the "executor never merges / merge only after review" contract is effectively not enforced in Part 1, and the hard-gate review has **never once run**. This PR carried the largest code surface so far (the product data layer, catalog, product page, and cart). The reviewer still activates automatically the moment the secret is added — recommend adding it before 1.05 / 1.04b so at least the rest of Part 1 is gated.
+- **Links:** D-1.03-2; D-1.02-8; D-1.01-6; D-1.03b-2; `CLAUDE.md` Branch & PR rules; PR #5.

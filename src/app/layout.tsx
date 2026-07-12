@@ -3,6 +3,7 @@ import { Bebas_Neue, Hanken_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { CartProvider } from "@/lib/cart";
 
 // Display face — brand.md §4. Bebas Neue ships a single weight (400).
 const bebasNeue = Bebas_Neue({
@@ -35,9 +36,11 @@ export default function RootLayout({
       className={`${bebasNeue.variable} ${hankenGrotesk.variable}`}
     >
       <body className="flex min-h-dvh flex-col">
-        <Header />
-        {children}
-        <Footer />
+        <CartProvider>
+          <Header />
+          {children}
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );
