@@ -266,3 +266,51 @@
 - **Alternatives considered:** Operator merges via the GitHub UI (rule-compliant) — not chosen. Add the auth secret and get the intended hard-gate review first — not chosen.
 - **Consequences:** `main` now holds Phase 1.04a. This is the **fourth** executor merge with no review after D-1.01-6, D-1.02-8, D-1.03-2 — so the "executor never merges / merge only after review" contract is effectively not enforced in Part 1, and the hard-gate review has **never once run**. This PR carried the largest code surface so far (the product data layer, catalog, product page, and cart). The reviewer still activates automatically the moment the secret is added — recommend adding it before 1.05 / 1.04b so at least the rest of Part 1 is gated.
 - **Links:** D-1.03-2; D-1.02-8; D-1.01-6; D-1.03b-2; `CLAUDE.md` Branch & PR rules; PR #5.
+
+### D-1.05-1 · 2026-07-12 · Order form targets Macedonia delivery only — city is free text, no country field
+- **Status:** Accepted (baked into the 1.05 brief; recorded by executor)
+- **Context:** The order form needs an address. `facts.md` marks "ships mainly Macedonia" VERIFIED but "ships outside Macedonia? (which countries may order)" UNVERIFIED, and flags it to confirm before 1.05 finalizes the form.
+- **Decision:** Collect **name, phone, address, city** only. **City is a free-text field; there is no country selector.** The form assumes Macedonia delivery.
+- **Alternatives considered:** A country dropdown / international address handling — rejected: cross-border ordering is UNVERIFIED, so a country field would imply a capability not confirmed. A structured Macedonian city list — rejected: free text is simpler, never wrong, and imposes no list to maintain.
+- **Consequences:** The form matches the one verified fact (Macedonia) and invents nothing. Downside: if cross-border ordering is later confirmed, adding a country field is a small follow-up (a new field + payload key), not a rebuild.
+- **Links:** Phase 1.05 brief Task 2 / D-1.05-1; `facts.md` Shipping & payment; `src/app/order/page.tsx`.
+
+### D-1.05-2 · 2026-07-12 · Order email is a stub this phase — no `resend` dependency added
+- **Status:** Accepted (baked into the 1.05 brief; recorded by executor)
+- **Context:** The order flow must be buildable and fully testable now, but the real order email needs a server-only secret (Resend API key) and Vaki's inbox address, neither of which is in scope for 1.05 (that is Phase 2.01).
+- **Decision:** The submit path calls a single server function `sendOrder(payload)` (`src/lib/order.ts`) that **makes no network call and uses no secret** this phase — it validates the payload and returns success. No `resend` package is installed (the install is deferred from 1.05 to 2.01; a stub needs no SDK). A `// Phase 2.01: replace stub body with the real Resend send` marker sits at the exact spot 2.01 edits.
+- **Alternatives considered:** Install `resend` now and wire a real send — rejected: it needs a secret + Vaki's address (both unavailable) and would email a real inbox during testing. Fake the email client-side — rejected: submission must be server-side so 2.01 can drop the secret-bearing call in with no client change.
+- **Consequences:** The whole flow (including the failure path) is testable now with zero secrets and zero emails sent; 2.01 swaps one function body. Downside: no real notification is sent until 2.01 — an accepted, planned gap.
+- **Links:** Phase 1.05 brief Task 4 / D-1.05-2; `src/lib/order.ts`; `00_stack-and-config.md` (resend deferred to 2.01); D-0.00-1.
+
+### D-1.05-3 · 2026-07-12 · No delivery-cost / shipping line anywhere in the cart or order total
+- **Status:** Accepted (baked into the 1.05 brief; recorded by executor)
+- **Context:** A cart/order normally shows a shipping line. `facts.md` marks "Delivery cost & courier" UNVERIFIED, and `brand.md` §9 frames delivery as arranged off-site with cash paid to the courier.
+- **Decision:** The order total is the **item subtotal only** (Σ price×qty). No delivery/shipping line, no cost, no timeframe, no free-shipping claim anywhere. A short plain line states delivery is arranged after ordering and paid in cash to the courier, in wording consistent with `brand.md` §9.
+- **Alternatives considered:** Show a delivery line with a placeholder/`[PLACEHOLDER: cost]` — rejected: a visible cost token in the money total reads as broken and invites a wrong number; the honest state is "no cost shown." A flat guessed fee — rejected outright (invented, UNVERIFIED).
+- **Consequences:** Nothing unverified about money reaches the customer; the total is exactly the goods. Downside: the customer doesn't learn the delivery cost on-site — matching the current business reality (it's arranged by message). Revisit when the cost is verified.
+- **Links:** Phase 1.05 brief Task 1/Task 4 / D-1.05-3; `facts.md` Shipping & payment; `brand.md` §9; `src/lib/cart.tsx` (`cartSubtotal`).
+
+### D-1.05-4 · 2026-07-12 · Cart store extended with mutation methods (setQty/removeLine/clear); line-item shape unchanged
+- **Status:** Accepted (executor call)
+- **Context:** The 1.04a cart store (`src/lib/cart.tsx`) exposed only `addItem`. The 1.05 cart page needs to change a line's quantity and remove a line, and the order flow needs to clear the cart on success. The brief says use the store "as-is; do not change the shape" (emphasis on the line-item **shape** `{ slug, name, price, size, colour, qty }`), and every change must write through the one store so the header badge stays in sync.
+- **Decision:** Add `setQty(line, qty)`, `removeLine(line)`, and `clear()` to the cart context (and a pure `cartSubtotal(items)` helper), all operating on the **unchanged** line-item shape via the same `readItems`/`writeItems` internals. No shape field was added, renamed, or removed.
+- **Alternatives considered:** Mutate `localStorage` directly from the cart page — rejected: it duplicates the store's key/serialisation/event logic and risks the header badge going out of sync (two writers). Store the cart in React state on the page — rejected: it would not persist and would fork the single source of truth.
+- **Consequences:** One store remains the single source of truth; the header badge updates on every cart change (verified in-browser). Downside: `cart.tsx` grew (new methods), but its public shape and storage format are untouched, so nothing downstream breaks.
+- **Links:** Phase 1.05 brief Task 1; `src/lib/cart.tsx`; D-1.05-5.
+
+### D-1.05-5 · 2026-07-12 · Cart line has no image → cart thumbnail is the shared 3:4 treated placeholder slot
+- **Status:** Accepted (executor call)
+- **Context:** Task 1 asks for the product image on each cart line, but the fixed line-item shape (`{ slug, name, price, size, colour, qty }`, D-1.05-4) stores **no image reference**, the product data layer (`src/lib/products.ts`) is server-only (`node:fs`), the cart page is a client component, and the committed catalog is currently empty (1.04b adds real products). So the real photo is not reachable from a cart line without either changing the fixed shape or building a client-side product-data path — both out of scope for 1.05.
+- **Decision:** Render each cart line's image as the shared **3:4 grayscale treatment** on a `bg-surface` slot (`PRODUCT_IMAGE_CLASS`, brand §7) — a treated placeholder tile, not an invented photo. The tile and the product name both link to `/products/<slug>` (the slug **is** in the line item), so the line is navigable.
+- **Alternatives considered:** Add an `image` field to the line item at add-to-cart time — rejected: the brief forbids changing the line-item shape and forbids touching `product-detail.tsx` (where add-to-cart lives). Fetch product data client-side to resolve the image — rejected: premature (catalog is empty; product population is 1.04b) and adds a client product path this phase doesn't need. Guess the image path from the slug — rejected (content-truth: image paths are arbitrary, set per product in JSON).
+- **Consequences:** No invented content; the cart is fully functional and on-brand. Downside: cart thumbnails show a plain treated tile rather than the product photo. Follow-up when real thumbnails are wanted: add an `image` to the line item (set at add-to-cart) — a small change once the shape can move (post-1.04b).
+- **Links:** Phase 1.05 brief Task 1; `src/app/cart/page.tsx`; `src/lib/format.ts` (`PRODUCT_IMAGE_CLASS`); D-1.05-4; D-1.04a-2.
+
+### D-1.05-6 · 2026-07-12 · PR #6 merged to `main` without a review (operator override — fifth executor-merge)
+- **Status:** Accepted (operator decision — explicit override)
+- **Context:** `CLAUDE.md` requires the operator (not the executor) to merge, and only after the GitHub Action review posts. The reviewer still skips (no auth secret since 1.01 — D-1.01-5; deferred to 1.07 — D-1.03b-2; confirmed on PR #6: `claude-review` passed in 3s by skip-gracefully design, 0 comments / 0 reviews). The 1.05 brief said "do not merge", so the phase was filed code-complete with PR #6 left open; the operator then explicitly instructed "merge to main." The executor surfaced the conflict and the compliant alternatives (add the auth secret so a real review runs first, or the operator merges via the GitHub UI); the instruction stood.
+- **Decision:** Squash-merge `phase-1.05-cart-order` into `main` with no review, executed by the executor at the operator's explicit direction.
+- **Alternatives considered:** Operator merges via the GitHub UI (rule-compliant) — not chosen. Add the auth secret and get the intended hard-gate review first — not chosen.
+- **Consequences:** `main` now holds Phase 1.05. This is the **fifth** executor merge with no review after D-1.01-6, D-1.02-8, D-1.03-2, D-1.04a-4 — so the "executor never merges / merge only after review" contract remains effectively unenforced in Part 1, and the hard-gate review has **never once run**. All of Part 1's customer-facing flow (catalog, product, cart, order) is now on `main` unreviewed. The reviewer still activates automatically the moment the secret is added — recommend adding it before 1.06 / 1.04b so at least the tail of Part 1 is gated.
+- **Links:** D-1.04a-4; D-1.03-2; D-1.02-8; D-1.01-6; D-1.03b-2; `CLAUDE.md` Branch & PR rules; PR #6.
