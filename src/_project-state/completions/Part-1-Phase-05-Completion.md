@@ -19,7 +19,7 @@ Verifiable by me:
 - ✅ **facts.md check + humanizer pass on all new strings** — MKD shown plainly as the unverified default (cart, order summary); no shipping-promise/delivery-cost/returns/sourcing/hype claim anywhere; the only money shown is the item subtotal; nothing from the do-not-ship strip register appears. New visible strings (`Your cart is empty.`, `View the catalog`, the delivery note, `Proceed to order`, the COD line, `Full name`/`Phone`/`Address`/`City`, the four field errors, `Place order`/`Sending…`, `Your order`, `Subtotal`, `THANK YOU`, and the two verbatim `brand.md` §9 lines) all read as plain gallery-label microcopy — no AI tells; the §9 lines are used verbatim by design.
 - ✅ **Tokens only** — every colour/font/space/radius comes from `brand.md` tokens / `.type-*` roles / the token utilities; radius 0px everywhere; the only reused literal is the standard white focus-ring recipe from 1.02+. `DEFAULT_CURRENCY = "MKD"` is a facts.md content default, not a design token. Verified by reading the source (no hex/px literals that belong to a token).
 - ✅ **State files updated** — `current-state.md` (NEXT = `1.06 — Contact + Legal`; `/cart` off the 404 list; owed-verification + placeholder registers refreshed; new Order-flow section), `file-map.md`, `00_stack-and-config.md` (dated 1.05 entry; no new dependency; resend deferred to 2.01), `decisions.md` (D-1.05-1..5).
-- ✅ **Branch pushed, PR opened (unmerged)** — branch `phase-1.05-cart-order`, PR #6 to `main`, filed **unmerged** per the brief (Lazar merges).
+- ✅ **Branch pushed, PR opened** — branch `phase-1.05-cart-order`, PR #6 to `main`. Filed unmerged per the brief; then **squash-merged to `main` at the operator's explicit direction, with no review (D-1.05-6)** — see §5/§8.
 
 ## 3. Decisions I made during this phase
 Five decisions recorded in `decisions.md`. The first three were baked into the brief; the last two are executor calls:
@@ -41,7 +41,7 @@ None in scope or output — all four tasks delivered as specified. One bug was f
 - **New:** `src/app/cart/page.tsx`, `src/app/order/page.tsx`, `src/app/order/actions.ts`, `src/app/order/thanks/page.tsx`, `src/lib/order.ts`.
 - **Edited:** `src/lib/cart.tsx` (added `setQty`/`removeLine`/`clear` + `cartSubtotal`; shape unchanged), `src/lib/format.ts` (added `DEFAULT_CURRENCY`), and the state files (`current-state.md`, `file-map.md`, `00_stack-and-config.md`, `decisions.md`).
 - **Not committed (local dev aid):** `.claude/launch.json` (a dev-server config used for in-browser verification) is left untracked, not part of this PR.
-- **Branch / PR:** `phase-1.05-cart-order` → PR #6 to `main`. Filed **unmerged** per the brief.
+- **Branch / PR:** `phase-1.05-cart-order` → PR #6 to `main`. Filed unmerged per the brief, then **squash-merged with no review at the operator's explicit direction (D-1.05-6)** — the fifth executor-merge after D-1.01-6, D-1.02-8, D-1.03-2, D-1.04a-4.
 - **Dependencies:** none added. `resend` deferred to 2.01 (D-1.05-2).
 - **Env flag:** `ORDER_STUB_FAIL` (server-side only) — forces the send-failure path when `=true`; unset = success. Not committed; would live in Vercel/`.env.local` only for a deployed failure demo.
 
@@ -63,7 +63,7 @@ None in scope or output — all four tasks delivered as specified. One bug was f
 - **1.06 (Contact + Legal) needs facts that are UNVERIFIED** (public email/phone/address, legal/registered business name). Expect visible `[PLACEHOLDER: …]` tokens on those pages until the facts land.
 - **Cart thumbnails are placeholder tiles** (D-1.05-5) until the line item can carry an image — a small follow-up, cleanest after 1.04b when real products/photos exist.
 - **Delivery cost / cross-border ordering** remain UNVERIFIED; the form is Macedonia-only and shows no delivery cost by design. Adding a country field or a delivery line later is a small change.
-- **Reviewer gate still off** (D-1.03b-2): PR #6 will be the sixth PR to merge unreviewed unless the auth secret is added first — strongly recommend adding it so the rest of Part 1 is gated.
+- **Reviewer gate still off** (D-1.03b-2): PR #6 merged unreviewed too (D-1.05-6) — the sixth PR to merge with no review; the hard gate has never once run. Strongly recommend adding the auth secret before 1.06 / 1.04b so at least the tail of Part 1 is gated.
 - **Vercel Hobby launch blocker** (D-1.03b-1) is unchanged and still owner-pending.
 - Build remains network-dependent on Google Fonts via `next/font` (retry resolves a flake).
 

@@ -61,7 +61,7 @@ The header/footer/Home link to these real, final paths; the pages arrive in thei
   - Verify Bebas Neue + Hanken Grotesk **Cyrillic** coverage before the Macedonian phase (D-1.02-3).
   - Final SEO title/description copy is provisional — owed a real pass at a content/SEO phase.
 - **Carried from 1.01:**
-  - Add a Claude auth secret to activate the automatic reviewer. Deferred to 1.07 (D-1.03b-2). Five phases have merged with no review; **1.05's PR #6 will be the sixth unreviewed PR** unless the secret is added first. The gate has never once run.
+  - Add a Claude auth secret to activate the automatic reviewer. Deferred to 1.07 (D-1.03b-2). **Six phases have now merged with no review** (PR #6 included, D-1.05-6). The gate has never once run; it activates the moment a secret is added.
 
 ## Placeholder register
 *(Every visible `[PLACEHOLDER: …]` on the site. Must be EMPTY before cutover — launch blocker.)*
@@ -77,8 +77,8 @@ The header/footer/Home link to these real, final paths; the pages arrive in thei
 - **The order payload** handed to `sendOrder` = the four customer fields (name/phone/address/city) + every cart line (slug, name, size, colour, qty, price) + the subtotal + currency. Verified locally via a dev-only server log (dev-only so no customer PII is logged in production).
 
 ## Integrations wired
-- Repo: github.com/petarjakimov11012011-cell/trajanov — private ✅. `main` holds Phase 1.04a; **Phase 1.05 is PR #6 (`phase-1.05-cart-order`) → `main`, opened and left UNMERGED** per the brief (Lazar merges).
-- GitHub review Action (Claude Code) — committed at `.github/workflows/claude-code-review.yml`; runs on every PR but **still skips: no auth secret set** (deferred to 1.07, D-1.03b-2). Consequence: PRs #1–#5 all merged unreviewed; **the hard gate has never once run**, and PR #6 will be the sixth unreviewed PR unless the secret is added first. Activates automatically the moment a secret is added.
+- Repo: github.com/petarjakimov11012011-cell/trajanov — private ✅. **`main` now holds Phase 1.05** — PR #6 (`phase-1.05-cart-order`) squash-merged with **no review** at the operator's explicit direction (D-1.05-6), the fifth executor-merge override after D-1.01-6, D-1.02-8, D-1.03-2, D-1.04a-4.
+- GitHub review Action (Claude Code) — committed at `.github/workflows/claude-code-review.yml`; runs on every PR but **still skips: no auth secret set** (deferred to 1.07, D-1.03b-2). Consequence: **PRs #1–#6 all merged unreviewed; the hard gate has never once run.** Activates automatically the moment a secret is added.
 - **Vercel — CONNECTED ✅** (1.03b). Project `trajanov` under "Petar Jakimov Projects", auto-deploying `main`. Live URL: https://trajanov.vercel.app. **⚠️ Hobby plan, NOT Pro — launch blocker, see Known issues + D-1.03b-1.**
 
 ## Carryovers / waiting on
