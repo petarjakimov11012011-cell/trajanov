@@ -71,8 +71,8 @@ The header/footer/Home link to these real, final paths; the pages arrive in thei
 - Forward guardrail: the handover's strip register (`docs/design-handovers/Part-1-Phase-02-Design-Handover.md` §3) — invented Stitch copy (fake shipping/returns/origin claims, newsletter, wishlist, editorial nav, "© 2024") that must **not** ship — verified absent from the 1.04a catalog + product pages; no shipping/returns/delivery-cost/sourcing claim appears anywhere.
 
 ## Integrations wired
-- Repo: github.com/petarjakimov11012011-cell/trajanov — private ✅. `main` holds Phase 1.03b. PRs #1–#3 all squash-merged with **no review** (D-1.01-6, D-1.02-8, D-1.03-2).
-- GitHub review Action (Claude Code) — committed at `.github/workflows/claude-code-review.yml`; runs on every PR but **still skips: no auth secret set** (deferred to 1.07, D-1.03b-2). Consequence: **1.04a will merge unreviewed too.** Activates automatically the moment a secret is added.
+- Repo: github.com/petarjakimov11012011-cell/trajanov — private ✅. **`main` now holds Phase 1.04a** — PR #5 (`phase-1.04a-products-engine`) squash-merged with **no review** at the operator's explicit direction (D-1.04a-4), the fourth executor-merge override after D-1.01-6, D-1.02-8, D-1.03-2.
+- GitHub review Action (Claude Code) — committed at `.github/workflows/claude-code-review.yml`; runs on every PR but **still skips: no auth secret set** (deferred to 1.07, D-1.03b-2). Consequence: **1.04a merged unreviewed too (D-1.04a-4); the hard gate has never once run.** Activates automatically the moment a secret is added.
 - **Vercel — CONNECTED ✅** (1.03b). Project `trajanov` under "Petar Jakimov Projects", auto-deploying `main`. Live URL: https://trajanov.vercel.app. **⚠️ Hobby plan, NOT Pro — launch blocker, see Known issues + D-1.03b-1.**
 
 ## Carryovers / waiting on
