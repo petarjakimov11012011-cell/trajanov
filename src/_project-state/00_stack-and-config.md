@@ -45,3 +45,11 @@ Machine: Petar's MacBook. Node/npm and all package versions unchanged from the 1
   - `latin` subset only at launch; **Cyrillic coverage owed before the Macedonian phase** (D-1.02-3 / D-0.00-7).
 - **Design tokens:** `brand.md` §12 mirrored into `src/app/globals.css` (`:root`), with shadcn semantic names aliased onto the brand tokens and both naming styles exposed via Tailwind v4 `@theme inline`; single always-dark theme, no `.dark` block (D-1.02-5). No `tailwind.config` file (v4 config lives in `globals.css`).
 - **Build note:** `next/font` requires network access at build time to fetch the Google Fonts (verified working: `npm run build` ✓).
+
+## 2026-07-12 — Phase 1.03 layout + Home: no new npm dependencies
+
+Machine: Petar's MacBook. Node/npm and all package versions unchanged from the 1.01 entry — **nothing was added to `package.json`.**
+
+- **Icons:** first real use of the already-installed **lucide-react@1.24.0** — `ShoppingBag` (cart), `Menu` (mobile toggle), `X` (panel close) in `src/components/header.tsx`. No new package.
+- **No animation library:** `motion` still not installed (deferred to first use per plan). Shell hover/focus uses CSS transitions only, gated by `motion-reduce:transition-none` (`brand.md` §8).
+- **Build note (recurring):** `next build` failed once this phase on `next/font` fetching Google Fonts (transient network/rate-limit), then passed on retry — the same network-dependent font-fetch behaviour recorded at 1.02, not a code issue.

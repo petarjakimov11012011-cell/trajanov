@@ -31,13 +31,15 @@
 - `.gitignore` — ignores `node_modules/`, `.next/`, `.env*`, `.vercel`
 - `README.md` — 3-line project pointer
 
-## App (created at 1.01, design system wired at 1.02)
-- `src/app/layout.tsx` — root layout: loads Bebas Neue + Hanken Grotesk via `next/font`, sets brand `<title>`/description, imports `globals.css`
-- `src/app/page.tsx` — minimal on-brand placeholder home (TRAJANOV wordmark + "Site in progress"); real Home lands in the first UI phase (see D-1.02-6)
+## App (created at 1.01, design system wired at 1.02, shell + Home at 1.03)
+- `src/app/layout.tsx` — root layout: loads Bebas Neue + Hanken Grotesk via `next/font`, sets brand `<title>`/description, imports `globals.css`, and wraps every route with `<Header>` + `<Footer>` (min-h-dvh flex column)
+- `src/app/page.tsx` — the real Home (1.03): wall-of-type hero, intro line, `VIEW CATALOG` CTA (a `Link` styled with `buttonVariants`, D-1.03-1), and the `FEATURED` heading + `Catalog coming soon.` empty state (no product content invented)
 - `src/app/globals.css` — Tailwind v4 entry + Trajanov design tokens (mirrors `brand.md` §12), shadcn semantic aliases, and `.type-*` role utilities (`brand.md` §4)
 - `src/app/favicon.ico` — default favicon (placeholder)
 - `src/components/` — shared UI components
-- `src/components/ui/button.tsx` — base Button, restyled to `brand.md` tokens at 1.02 (0px corners, Label-caps, white-accent primary)
+- `src/components/header.tsx` — shared site header (1.03), client component: sticky Ink bar with hairline, `TRAJANOV` wordmark → `/`, `CATALOG`/`CONTACT` nav, cart icon → `/cart` (visual only, no badge), and a focus-trapped mobile menu panel (Lucide `Menu`/`X`/`ShoppingBag`)
+- `src/components/footer.tsx` — shared site footer (1.03): Surface block, top hairline, `TRAJANOV` wordmark, verified Instagram link, `PRIVACY`/`TERMS` legal links, `© 2026 Trajanov` (no contact rows)
+- `src/components/ui/button.tsx` — base Button, restyled to `brand.md` tokens at 1.02 (0px corners, Label-caps, white-accent primary); exports `buttonVariants` (used by the Home CTA)
 - `src/lib/utils.ts` — shadcn `cn()` class-merge helper
 - `data/products/` — one structured data file per product (format fixed at 1.04); empty, holds `.gitkeep`
 - `public/images/` — product photos and brand assets; empty, holds `.gitkeep`
