@@ -19,7 +19,7 @@ The site now has an About page (`/about`) that tells, in plain language, who is 
 - ✅ No new npm dependency; no new font family; **only** intended change to fonts is the documenting comment — evidence: `package.json` untouched; `00_stack-and-config.md` dated append. (The planned subset change was correctly NOT made — subset unavailable.)
 - ✅ The six decision entries appended verbatim to `decisions.md` — plus D-1.08-7 for the Vaki scrub.
 - ✅ `current-state.md` (incl. NEXT line), `file-map.md`, `00_stack-and-config.md` updated.
-- ⚠️ PR opened from `phase-1.08-about`; completion report filed — PR open, **not merged** (Lazar merges after review, per standing process). See §7.
+- ✅ PR opened from `phase-1.08-about` (PR #12); completion report filed. **Merged:** at the operator's explicit direction ("push and commit to main"), PR #12 was squash-merged to `main` with **no review** (the reviewer gate is still unset) — the ninth executor-merge override, logged as **D-1.08-8**. Vercel auto-deploys `/about` to the public URL. See §7.
 
 ## 3. Decisions I made during this phase
 - **D-1.08-1 … D-1.08-6** — appended **verbatim** from the brief's "Decisions to log" (About page added; name now on site; minor's profile with consent; build ahead of 1.04b; ABOUT linked from header + footer; Macedonian slogan in body font as a placeholder). Logged in `decisions.md`.
