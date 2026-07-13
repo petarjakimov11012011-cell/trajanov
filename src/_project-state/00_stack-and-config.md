@@ -72,3 +72,15 @@ Machine: Petar's MacBook. Node/npm and all package versions unchanged from the 1
 - **`ORDER_STUB_FAIL` env flag (server-side only, deterministic failure switch).** `sendOrder` returns failure when `process.env.ORDER_STUB_FAIL === "true"` (unset = success), so the send-failure path is testable. It is **not** `NEXT_PUBLIC_`-prefixed, so it is undefined in the client bundle — server-only by construction. It belongs in Vercel/`.env.local` only if a deployed failure demo is wanted; it is unset (success) by default and is **not** committed anywhere. No `.env*` file was added (`.env*` stays gitignored).
 - **No animation library** (`motion` still deferred); transitions are CSS only, gated by `motion-reduce:*`.
 - Node/npm and all other package versions unchanged.
+
+## 2026-07-13 — Phase 1.02c design refresh: display font swapped, NO new npm dependency
+
+Machine: Petar's MacBook. Node/npm and all package versions unchanged from the 1.01 entry — **nothing was added to `package.json`.**
+
+- **Display font swapped Bebas Neue → Syne (D-1.02c-2).** Still loaded with the built-in **`next/font/google`** (no package to pin; the face is fetched and self-hosted at build):
+  - **Syne** — display face, **variable** (set at weight `700` in the `.type-*` roles), `latin` subset, CSS var `--font-syne` (replaces `--font-bebas`).
+  - **Hanken Grotesk** — body face, unchanged (variable, `latin`, `--font-hanken`).
+  - `latin` subset only at launch; **Cyrillic coverage owed before the Macedonian phase now applies to Syne**, not Bebas (D-1.02-3 / D-0.00-7).
+- **New design tokens (in `globals.css`, mirrored to `brand.md` §12):** `--radius-button: 12px` (buttons only), `--btn-hover-bg #2A2A2A`, `--btn-hover-border #B7BABB`, `--btn-pad-y 14px`, `--btn-pad-x 24px`, `--btn-cta-pad-x 20px`. No colour added to the resting palette.
+- **New asset:** `public/images/home/hero.jpg` — the owner-supplied Home hero photograph (1352×1390 JPG, ~166 KB), served via `next/image`. Not an npm dependency; committed binary.
+- **Build note:** `next/font` still fetches Google Fonts at build (verified working: `npm run build` ✓ this phase). No `next.config` change (the hero image is a local static import, so no remote-image domains).

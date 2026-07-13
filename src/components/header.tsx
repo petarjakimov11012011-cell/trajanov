@@ -100,7 +100,7 @@ export function Header() {
         <Link
           href="/"
           aria-label="Trajanov — home"
-          className={`inline-flex min-h-11 items-center font-[family-name:var(--font-display)] text-[26px] leading-none tracking-[0.16em] text-text transition-opacity hover:opacity-80 motion-reduce:transition-none md:justify-self-start ${FOCUS_RING}`}
+          className={`inline-flex min-h-11 items-center font-[family-name:var(--font-display)] font-bold text-[26px] leading-none tracking-[0.16em] text-text transition-opacity hover:opacity-80 motion-reduce:transition-none md:justify-self-start ${FOCUS_RING}`}
         >
           TRAJANOV
         </Link>
@@ -168,7 +168,7 @@ export function Header() {
           className="fixed inset-0 z-50 flex flex-col bg-surface-2 md:hidden"
         >
           <div className="flex h-16 items-center justify-between border-b border-border px-5">
-            <span className="font-[family-name:var(--font-display)] text-[26px] leading-none tracking-[0.16em] text-text">
+            <span className="font-[family-name:var(--font-display)] font-bold text-[26px] leading-none tracking-[0.16em] text-text">
               TRAJANOV
             </span>
             <button
