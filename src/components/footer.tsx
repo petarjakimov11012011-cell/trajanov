@@ -21,7 +21,7 @@ export function Footer() {
         <Link
           href="/"
           aria-label="Trajanov — home"
-          className={`inline-flex font-[family-name:var(--font-display)] text-5xl leading-none tracking-[0.12em] text-text transition-opacity hover:opacity-80 motion-reduce:transition-none md:text-6xl ${FOCUS_RING}`}
+          className={`inline-flex font-[family-name:var(--font-display)] font-bold text-5xl leading-none tracking-[0.12em] text-text transition-opacity hover:opacity-80 motion-reduce:transition-none md:text-6xl ${FOCUS_RING}`}
         >
           TRAJANOV
         </Link>

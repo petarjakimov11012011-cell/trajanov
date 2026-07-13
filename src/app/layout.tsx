@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Hanken_Grotesk } from "next/font/google";
+import { Syne, Hanken_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { CartProvider } from "@/lib/cart";
 
-// Display face — brand.md §4. Bebas Neue ships a single weight (400).
-const bebasNeue = Bebas_Neue({
-  weight: "400",
+// Display face — brand.md §4. Syne is a variable geometric display grotesque;
+// the display roles set it at weight 700 (the wordmark weight on the proof).
+// (Replaces Bebas Neue as of Phase 1.02c — D-1.02c-2.)
+const syne = Syne({
   subsets: ["latin"],
-  variable: "--font-bebas",
+  variable: "--font-syne",
   display: "swap",
 });
 
@@ -33,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bebasNeue.variable} ${hankenGrotesk.variable}`}
+      className={`${syne.variable} ${hankenGrotesk.variable}`}
     >
       <body className="flex min-h-dvh flex-col">
         <CartProvider>
