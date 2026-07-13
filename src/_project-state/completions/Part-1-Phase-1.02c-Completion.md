@@ -55,13 +55,13 @@ All logged in `decisions.md`:
 - Button computed styles match the spec exactly (radius 12px, 1px `#8E9192`, `#201F1F` fill, white label, CTA px 20, height 46px).
 
 **Owed to Lazar (on the deployed preview + a real phone):**
-- 🔴 **Verify or cut the hero copy "wear-tested" / "printed in small runs" and sync `facts.md`** (D-1.02c-3) — must happen before this is merged to the live site.
+- **Sync `facts.md` for the hero copy "wear-tested" / "printed in small runs"** (D-1.02c-3) — at merge the operator **confirmed these are true**; the `facts.md` VERIFIED-row update is owed to Lazar (an executing Claude can't edit `facts.md`), so the source of truth matches the now-live copy.
 - Eyeball the refreshed buttons + Syne type + colour hero on the deployed URL and a real phone (fonts fetch at build; outline legibility on the true device).
 Both are on the `current-state.md` owed-verification register.
 
 ## 8. Risks, follow-ups, what the next phase needs to know
-- **Content-truth: unverified hero copy is in the PR.** Nothing unverified is on the live site (not merged), but do not merge before Lazar resolves the `facts.md` gap (D-1.02c-3).
-- **Merge gate unchanged.** The Claude review Action still skips (no auth secret since 1.01 — D-1.03b-2); this PR would merge unreviewed like #1–#7 unless the secret is added first. **I did not merge** — the PR is open for the operator's decision (no new merge-override decision was taken this phase).
+- **Content-truth: hero copy shipped on operator confirmation.** At merge the operator confirmed "wear-tested" / "printed in small runs" are true and directed the merge (D-1.02c-3/-6); the copy is now live. Lazar still owes the `facts.md` VERIFIED-row update so the source of truth matches.
+- **Merged at operator direction (D-1.02c-6).** PR #9 squash-merged to `main` with **no review** (the Claude review Action still skips — no auth secret since 1.01, D-1.03b-2); the **seventh** executor-merge override. Vercel auto-deploys the refresh to the public URL.
 - **Syne scale is proof-derived, not fully spec'd** (D-1.02c-2) — if the 1.02b base handover later surfaces, re-check the display sizes and the button padding against it.
 - **Hero photo can be upgraded** — if Vaki supplies the untouched high-res original, drop it in at the same path; no code change (D-1.02c-4).
 - `npm run lint` — **clean** (no errors, no warnings) on the final code; `npm run build` — **green** (11 routes generated) on the final code.
