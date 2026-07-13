@@ -28,7 +28,7 @@ export default function PrivacyPage() {
             <p className="type-body-md text-text-muted">
               This site is the online store for Trajanov, operated by{" "}
               <PlaceholderToken>
-                [PLACEHOLDER: registered business name — from Vaki]
+                [PLACEHOLDER: registered business name — from Vladimir]
               </PlaceholderToken>
               .
             </p>

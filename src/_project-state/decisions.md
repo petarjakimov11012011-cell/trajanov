@@ -442,3 +442,61 @@
 - **Alternatives considered:** Operator merges via the GitHub UI (rule-compliant) — not chosen. Add the auth secret and get the intended hard-gate review first — not chosen.
 - **Consequences:** `main` now holds the renewed footer and Vercel auto-deploys it to the public URL. This is the **eighth** executor merge with no review after D-1.01-6, D-1.02-8, D-1.03-2, D-1.04a-4, D-1.05-6, D-1.06-5, D-1.02c-6 — the "executor never merges / merge only after review" contract remains unenforced in Part 1, and the hard-gate review has **never once run**.
 - **Links:** D-1.02c-6; D-1.06-5; D-1.05-6; D-1.04a-4; D-1.03-2; D-1.02-8; D-1.01-6; D-1.03b-2; `CLAUDE.md` Branch & PR rules; PR #10.
+
+### D-1.08-1 · 2026-07-14 · About page added (scope beyond launch IA)
+- **Status:** Accepted (owner request via Lazar; recorded by executor)
+- **Context:** the launch page list (Plan §4) had no About page; the owner (Vladimir, via Lazar) requested one.
+- **Decision:** add `/about`.
+- **Alternative rejected:** fold the story into Home — rejected, it dilutes the split hero and gives the story no shareable URL.
+- **Consequence:** one extra static page, off the critical path.
+
+### D-1.08-2 · 2026-07-14 · Founder's name now appears on the site (reverses the no-name policy)
+- **Status:** Accepted (owner call via Lazar; facts.md updated out of band 2026-07-14)
+- **Context:** `facts.md` Identity previously stated, VERIFIED, that the owner's name does not appear on the site.
+- **Decision:** publish the full name **Vladimir Trajanov**; the old Identity row is marked *Superseded by D-1.08-2*.
+- **Alternative rejected:** keep the brand nameless-founder — rejected, the owner explicitly asked for his name and story.
+- **Consequence:** the founder is now publicly named on the store.
+
+### D-1.08-3 · 2026-07-14 · Publish a minor's profile with consent and minimal detail
+- **Status:** Accepted (owner call via Lazar; guardian consent on file per facts.md)
+- **Context:** the founder was born 2010 (a minor); his profile is going on a public commercial site.
+- **Decision:** publish only name + achievement + brand; parent/guardian consent obtained (via Lazar, 2026-07-14); **omit birth year, school, and home town**; location shown only as "from Macedonia"; no new photo added (the one consented photo on Home stays the only image of him).
+- **Alternative rejected:** full profile with age/school/town from the press — rejected on child-safety grounds.
+- **Consequence:** the story ships in a deliberately minimal form.
+
+### D-1.08-4 · 2026-07-14 · Build 1.08 now, ahead of the still-blocked 1.04b
+- **Status:** Accepted (orchestrator sequencing; recorded by executor)
+- **Context:** 1.04b (critical path) is blocked on product data; 1.08 needs none.
+- **Decision:** run 1.08 out of numeric order; it touches different files from 1.04b (no collision).
+- **Alternative rejected:** wait for 1.04b — rejected, wastes the blocked window.
+- **Consequence:** NEXT returns to 1.04b after this phase.
+
+### D-1.08-5 · 2026-07-14 · `ABOUT` linked from header nav and footer bottom bar
+- **Status:** Accepted (baked into the 1.08 brief; recorded by executor)
+- **Context:** an unlinked page is undiscoverable.
+- **Decision:** add `ABOUT` to the header primary nav and the footer bottom bar, reusing existing link styling.
+- **Alternative rejected:** footer-only — rejected, the brand story is worth primary discovery.
+- **Consequence:** two shared components change (site-wide).
+
+### D-1.08-6 · 2026-07-14 · Macedonian slogan set in the body font with the Cyrillic subset; ships as a placeholder until the founder confirms exact wording
+- **Status:** Accepted (baked into the 1.08 brief; recorded by executor). **Resolution:** the fallback branch was taken — Hanken Grotesk offers **no `cyrillic` Google Fonts subset** (next/font allows only latin/latin-ext/cyrillic-ext/vietnamese, empirically confirmed; cyrillic-ext excludes the Macedonian core block U+0400–045F), so no subset was enabled; the slogan renders Macedonian via the system Cyrillic fallback already at the tail of `--font-body` (`ui-sans-serif, system-ui, sans-serif`) — verified in dev with a temporary Macedonian test string (all Macedonian-specific glyphs paint, no tofu).
+- **Context:** the display face (Syne) is Latin-only; the exact slogan text is unconfirmed and must not be scraped from the press.
+- **Decision:** the slogan line uses Hanken Grotesk with the `cyrillic` subset enabled (system Cyrillic fallback if unavailable), and shows a placeholder token until Vladimir supplies the exact Macedonian text.
+- **Alternative rejected:** transcribe the press version into Syne — rejected (his artwork, possible transcription errors, missing glyphs).
+- **Consequence:** one Cyrillic string comes forward now; the full Cyrillic audit for the future Macedonian site is unchanged. If the exact slogan is never supplied, the resolution at cutover is to remove the slogan line (not ship a placeholder) — the register must be empty to launch.
+
+### D-1.08-7 · 2026-07-14 · Nickname "Vaki" scrubbed from all rendered placeholder tokens (→ "Vladimir")
+- **Status:** Accepted (executor call; wording operator-directed)
+- **Context:** the 2026-07-14 `facts.md` update newly VERIFIED the nickname **"Vaki"** as *INTERNAL ONLY — must not appear anywhere on the site*. It was rendering as visible red text in **five** `<PlaceholderToken>` strings written in earlier phases (when "Vaki" was used freely in internal-facing placeholder notes): the footer email token (**site-wide**), the `/contact` email token, the `/privacy` registered-business-name token, and the `/terms` business-name + returns tokens. The 1.08 DoD requires the shared footer to be Vaki-free; leaving the others would keep a VERIFIED-rule violation live.
+- **Decision:** reword every token's `— from Vaki` attribution to **`— from Vladimir`** (his now-public, VERIFIED name — operator chose this wording) across `footer.tsx`, `contact/page.tsx`, `privacy/page.tsx`, `terms/page.tsx` (×2), and the illustrative example in `placeholder-token.tsx`'s docstring. Internal, non-rendered code comments in `src/lib/*` that reference "Vaki" are left as-is (not on the public site).
+- **Alternative rejected:** footer-only fix (my scope) — rejected, leaves four visible "Vaki"s live on contact/privacy/terms; dropping the `— from …` attribution entirely — rejected, operator preferred naming Vladimir.
+- **Consequence:** the nickname no longer appears anywhere on the rendered site. Three pages the 1.08 brief marked out-of-scope were touched, but only placeholder-note text changed (zero logic/behaviour change). The placeholder-register token wording in `current-state.md` is updated to match.
+- **Links:** `facts.md` Founder / About (nickname row); `src/components/footer.tsx`; `src/app/{contact,privacy,terms}/page.tsx`; `src/components/placeholder-token.tsx`; D-1.06-1.
+
+### D-1.08-8 · 2026-07-14 · PR #12 merged to `main` by the executor (operator override — ninth executor-merge)
+- **Status:** Accepted (operator decision — explicit override)
+- **Context:** `CLAUDE.md` requires the operator (not the executor) to merge, and only after the GitHub Action review posts; the reviewer still skips (no auth secret since 1.01 — D-1.01-5; deferred — D-1.03b-2). The 1.08 phase was filed code-complete with PR #12 open. The executor surfaced (a) that merging **auto-deploys to the public live site** — now including a **minor's name + story** (guardian consent asserted in `facts.md`, independent confirmation still owed) on a store still on **Vercel Hobby** (D-1.03b-1), and (b) that this would be the ninth unreviewed merge — and offered the compliant paths (operator merges via the GitHub UI; or add the reviewer secret so a real review runs first). The operator explicitly instructed "push and commit to main."
+- **Decision:** Squash-merge `phase-1.08-about` into `main` with no review, executed by the executor at the operator's explicit direction. This entry is committed inside PR #12 so `main` carries the record after the squash-merge.
+- **Alternatives considered:** Operator merges via the GitHub UI (rule-compliant) — not chosen. Add the auth secret and get the intended hard-gate review first — not chosen.
+- **Consequences:** `main` now holds Phase 1.08 and Vercel auto-deploys `/about` (the founder's name + story, the `ABOUT` nav/footer links, and the Vaki→Vladimir token scrub) to the public URL — **a minor is now publicly named on the live store.** This is the **ninth** executor merge with no review after D-1.01-6, D-1.02-8, D-1.03-2, D-1.04a-4, D-1.05-6, D-1.06-5, D-1.02c-6, D-1.02c-9 — the "executor never merges / merge only after review" contract remains unenforced in Part 1, and the hard-gate review has **never once run**. Still owed: independent confirmation of the guardian consent, Lazar's deployed-URL/real-phone eyeball, and the reviewer secret. Reversible: the Action activates the moment a secret is added.
+- **Links:** D-1.02c-9; D-1.06-5; D-1.05-6; D-1.04a-4; D-1.03-2; D-1.02-8; D-1.01-6; D-1.03b-2; D-1.03b-1; D-1.08-3; `CLAUDE.md` Branch & PR rules; PR #12.

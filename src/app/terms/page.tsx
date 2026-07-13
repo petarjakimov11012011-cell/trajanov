@@ -33,7 +33,7 @@ export default function TermsPage() {
             <p className="type-body-md text-text-muted">
               Trajanov is an online clothing store, operated by{" "}
               <PlaceholderToken>
-                [PLACEHOLDER: registered business name — from Vaki]
+                [PLACEHOLDER: registered business name — from Vladimir]
               </PlaceholderToken>
               . You order through the form on this site and pay cash on delivery.
             </p>
@@ -74,7 +74,7 @@ export default function TermsPage() {
             <h2 className="type-label text-text">Returns and exchanges</h2>
             <p className="type-body-md text-text-muted">
               <PlaceholderToken>
-                [PLACEHOLDER: returns &amp; exchanges policy — from Vaki]
+                [PLACEHOLDER: returns &amp; exchanges policy — from Vladimir]
               </PlaceholderToken>
             </p>
           </div>

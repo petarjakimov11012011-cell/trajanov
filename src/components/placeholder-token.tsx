@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 // Phase 1.06. A visible, deliberately-unfinished content token for facts that are
 // UNVERIFIED in facts.md. It renders the literal register token (e.g.
-// "[PLACEHOLDER: public email — from Vaki]") in the brand's error colours so it
+// "[PLACEHOLDER: public email — from Vladimir]") in the brand's error colours so it
 // reads as loud and clearly unfinished — never as real copy and never a silent
 // blank. Every one of these is a launch blocker tracked in the placeholder
 // register in current-state.md and must be gone before cutover.
