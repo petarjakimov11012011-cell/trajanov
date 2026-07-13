@@ -314,3 +314,35 @@
 - **Alternatives considered:** Operator merges via the GitHub UI (rule-compliant) — not chosen. Add the auth secret and get the intended hard-gate review first — not chosen.
 - **Consequences:** `main` now holds Phase 1.05. This is the **fifth** executor merge with no review after D-1.01-6, D-1.02-8, D-1.03-2, D-1.04a-4 — so the "executor never merges / merge only after review" contract remains effectively unenforced in Part 1, and the hard-gate review has **never once run**. All of Part 1's customer-facing flow (catalog, product, cart, order) is now on `main` unreviewed. The reviewer still activates automatically the moment the secret is added — recommend adding it before 1.06 / 1.04b so at least the tail of Part 1 is gated.
 - **Links:** D-1.04a-4; D-1.03-2; D-1.02-8; D-1.01-6; D-1.03b-2; `CLAUDE.md` Branch & PR rules; PR #6.
+
+### D-1.06-1 · 2026-07-13 · Contact page channels: Instagram primary, email/phone as placeholder tokens, no street address
+- **Status:** Accepted (baked into the 1.06 brief; recorded by executor)
+- **Context:** The contact page needs real ways to reach the store. `facts.md` marks Instagram VERIFIED (the one live channel) but public email, phone, and address all UNVERIFIED (parallel track).
+- **Decision:** Instagram is the primary, working channel (`https://www.instagram.com/trajanovv2026`). Email and phone render as their visible `[PLACEHOLDER: … — from Vaki]` tokens. **No public street address is shown** — this is an online, order-by-message, cash-on-delivery store that does not need to publish one; if Vaki later wants an address it is a trivial add.
+- **Alternatives considered:** An address block placeholder — rejected: it adds a register item for a fact this store model does not require publicly. Silently omitting email/phone — rejected: content-truth wants the gap visible and tracked, not hidden.
+- **Consequences:** The page shows one real channel and two loud, register-tracked gaps; nothing is invented. Downside: until Vaki supplies email/phone, the page carries two placeholder tokens (launch blockers, on the register).
+- **Links:** Phase 1.06 brief Task 1 / D-1.06-1; `facts.md` Contact; `src/app/contact/page.tsx`.
+
+### D-1.06-2 · 2026-07-13 · Legal pages stay processor-agnostic; no analytics/cookie-vendor disclosure yet
+- **Status:** Accepted (baked into the 1.06 brief; recorded by executor)
+- **Context:** The privacy and terms pages describe how customer data is handled. The real email send (2.01) and analytics (2.02) are not wired yet, so naming live infrastructure would describe something that does not exist today.
+- **Decision:** The legal copy describes data handling **at the model level** — what is collected (name, phone, address, city), why (to contact the customer and arrange delivery), that it is not sold — and **does not name Resend, Vercel, or any analytics vendor, and makes no cookie/analytics disclosure**. It does state plainly that the site **does not use tracking cookies** (true across the whole model). A "name the actual processors + add the cookie/analytics disclosure" pass is **owed at/after 2.02** and is on the owed-verification register.
+- **Alternatives considered:** Name Resend/Vercel/the analytics vendor now — rejected: untrue today (none are wired), and content-truth forbids describing infrastructure that does not exist. Omit the cookie line entirely — rejected: "no tracking cookies" is true and worth stating for a shopper.
+- **Consequences:** The pages are truthful for the site as it exists now and need one disclosed follow-up pass once 2.01/2.02 land. Downside: the privacy page is not yet its final, processor-named form — flagged on the register so it is not forgotten.
+- **Links:** Phase 1.06 brief Task 2/Task 3 / D-1.06-2; `src/app/privacy/page.tsx`; `current-state.md` owed-verification register; Phases 2.01 / 2.02.
+
+### D-1.06-3 · 2026-07-13 · Currency not asserted in legal text
+- **Status:** Accepted (baked into the 1.06 brief; recorded by executor)
+- **Context:** The terms page states how prices work. `facts.md` marks "Prices / currency" (MKD assumed) UNVERIFIED, and the rest of the site treats MKD as a plain default, not a committed fact.
+- **Decision:** Terms says the price is "shown on each product page" and never states a currency (no "prices are in MKD"). This mirrors how the cart, order summary, and product template present MKD as an unverified default rather than a committed legal fact.
+- **Alternatives considered:** State "prices are in MKD" in the terms — rejected: it upgrades an UNVERIFIED default into a committed legal claim.
+- **Consequences:** Nothing unverified about currency is asserted in legal copy. Downside: none — the price with its currency still shows on each product page where the customer decides.
+- **Links:** Phase 1.06 brief Task 3 / D-1.06-3; `facts.md` Shipping & payment; `src/lib/format.ts` (`DEFAULT_CURRENCY`); `src/app/terms/page.tsx`.
+
+### D-1.06-4 · 2026-07-13 · Returns is a placeholder token, not silence
+- **Status:** Accepted (baked into the 1.06 brief; recorded by executor)
+- **Context:** A clothing store needs a stated stance on returns, but `facts.md` has no verified returns policy.
+- **Decision:** The terms page carries a "Returns and exchanges" section holding the `[PLACEHOLDER: returns & exchanges policy — from Vaki]` token, so the missing policy is loud and register-tracked. This makes "supply a returns policy" a launch-blocking item until Vaki provides it.
+- **Alternatives considered:** Omit returns entirely — rejected: a clothing store needs a stated stance, and silence hides the gap. Invent a window (e.g. "14-day returns") — rejected outright (content-truth; that exact false badge is on the do-not-ship strip register).
+- **Consequences:** The gap is visible and blocks launch until filled. Downside: the terms page ships with a visible placeholder in the returns section until Vaki supplies the policy.
+- **Links:** Phase 1.06 brief Task 3 / D-1.06-4; `src/app/terms/page.tsx`; `current-state.md` placeholder register.
