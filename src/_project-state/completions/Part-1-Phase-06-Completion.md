@@ -29,7 +29,7 @@ None. Scope was held to the three pages, their metadata, and the four placeholde
 ## 5. Changed files / deliverables
 - Code (new): `src/app/contact/page.tsx`, `src/app/privacy/page.tsx`, `src/app/terms/page.tsx`, `src/components/placeholder-token.tsx`.
 - State: `src/_project-state/current-state.md`, `src/_project-state/file-map.md`, `src/_project-state/decisions.md` (D-1.06-1..4), and this report.
-- Branch: `phase-1.06-contact-legal` · PR: <PR link added on open>
+- Branch: `phase-1.06-contact-legal` · PR: https://github.com/petarjakimov11012011-cell/trajanov/pull/7
 - No design handover was created — none exists or is needed for this phase (content laid into the established layout). No secrets, no ops/dashboard changes.
 
 ## 6. State updates done (code phases — mandatory)
