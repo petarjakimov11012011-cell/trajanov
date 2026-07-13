@@ -3,7 +3,7 @@ NEXT: 1.04b — Products, Catalog, Product page (blocked: awaiting Vaki's produc
 # current-state.md — Trajanov
 *This snapshot gets OVERWRITTEN — it mirrors the repo as it is right now, never the plan. Code updates it (including the NEXT line above) when closing every phase. If plan and code disagree, this file follows the code and the mismatch is surfaced.*
 
-**Last updated:** 2026-07-13 (**Phase 1.02c design refresh** — Code: dark rounded buttons, **Syne** display font, split Home hero with the owner's photo; on top of Phase 1.06 + the phone content update)
+**Last updated:** 2026-07-13 (**Phase 1.02c design refresh** — Code: dark rounded buttons, **Syne** display font, split Home hero with the owner's photo; on top of Phase 1.06 + the phone content update. **Follow-on:** the shared footer was renewed from the standalone 1.02b-3 handover — two columns, restrained wordmark, monochrome hairline — PR #10, D-1.02c-7/-8/-9.)
 
 ## Summary (plain language)
 - **New this phase (1.02c) — a design refresh applying the Phase 1.02b-2 handover addendum (run out of numeric order, on top of 1.06 — D-1.02c-1):**
@@ -37,7 +37,7 @@ See `src/_project-state/00_stack-and-config.md` (only source). **No new dependen
 - **`src/app/privacy/page.tsx` — privacy page (1.06, NEW):** static server component; `PRIVACY` header + "Last updated 13 July 2026" + seven plain sections (who runs it, what we collect, why, your cart, no accounts/no online payment, cookies, not sold); operating entity as a `<PlaceholderToken>`; processor-agnostic, no analytics/cookie-vendor disclosure (D-1.06-2); metadata title/description.
 - **`src/app/terms/page.tsx` — terms page (1.06, NEW):** static server component; `TERMS` header + "Last updated 13 July 2026" + sections (about, how ordering works as a 3-step list, prices, delivery, returns & exchanges, governing law, questions); prices "as shown" with no currency (D-1.06-3); returns section holds its `<PlaceholderToken>` (D-1.06-4); operating entity placeholder; governing law North Macedonia; verified Instagram link; metadata title/description.
 - `src/components/header.tsx` — shared header (1.03; badge 1.04a): the live monochrome cart-count badge reads `useCart()`; **the cart icon → `/cart` now resolves to the real page.**
-- `src/components/footer.tsx` — shared footer (1.03), unchanged: Instagram link, `PRIVACY`/`TERMS`, `© 2026 Trajanov`. **Its `/privacy` and `/terms` links now resolve to the real pages.**
+- `src/components/footer.tsx` — shared footer (**renewed 1.02c** from the standalone 1.02b-3 handover): a restrained Syne wordmark (≈ header size, not hero-scale), two columns — **CONTACT** (Lucide `Mail` + the email `<PlaceholderToken>`, since the public email is UNVERIFIED) and **SOCIAL** (a purpose-built Instagram SVG + `@trajanovv2026`, new tab) — and a bottom bar (`© 2026 Trajanov` · `PRIVACY` · `TERMS`) above a 1px `--border` rule. Monochrome top hairline, **no red** (D-1.02c-7); custom Instagram glyph because the pinned lucide-react dropped brand icons (D-1.02c-8). `/privacy` and `/terms` resolve to the real pages.
 - **`src/components/placeholder-token.tsx` — shared placeholder token (1.06, NEW):** renders a literal UNVERIFIED-fact token in the brand's error colours (`--error` on `--error-surface`, the AA-checked 5.5:1 pair) so it reads as loud and clearly unfinished; `box-decoration-clone` keeps its background intact when a long token wraps (no 375px overflow). Used by the contact/privacy/terms pages.
 - `src/components/products/product-card.tsx` — catalog card (1.04a), unchanged this phase.
 - `src/components/products/product-detail.tsx` — product detail (1.04a), unchanged this phase.
@@ -49,7 +49,7 @@ See `src/_project-state/00_stack-and-config.md` (only source). **No new dependen
 - `src/app/globals.css` — **updated 1.02c**: `--font-display` → Syne, `.type-display-xl`/`.type-headline-lg` retuned to Syne 700, and the new `--radius-button` + `--btn-hover-*`/`--btn-pad-*` tokens.
 - `src/lib/utils.ts` — unchanged from earlier phases.
 - `src/app/layout.tsx` — **updated 1.02c**: loads Syne (was Bebas Neue) + Hanken via `next/font`.
-- `src/components/header.tsx` / `src/components/footer.tsx` — **touched 1.02c**: wordmarks set to `font-bold` so Syne reads at weight 700 (Syne 400 is too light); otherwise unchanged.
+- `src/components/header.tsx` — **touched 1.02c**: wordmark set to `font-bold` so Syne reads at weight 700 (Syne 400 is too light); otherwise unchanged. (The footer was later fully renewed — see its entry above.)
 
 ## Expected 404s (by design — not bugs)
 The header/footer/Home link to these real, final paths; the pages arrive in their own phases. Each currently renders Next's default not-found (wrapped in the shell) and that is intended:
@@ -84,7 +84,7 @@ The header/footer/Home link to these real, final paths; the pages arrive in thei
 ## Placeholder register
 *(Every visible `[PLACEHOLDER: …]` on the site. Must be EMPTY before cutover — launch blocker.)*
 - **Three fact-tokens now render (all UNVERIFIED in `facts.md`, all launch blockers until Vaki supplies them):**
-  - `[PLACEHOLDER: public email — from Vaki]` — on `/contact` (Email row).
+  - `[PLACEHOLDER: public email — from Vaki]` — on `/contact` (Email row) **and now in the sitewide footer** (CONTACT column, renewed 1.02c). Because the footer renders on every page, this token appears **site-wide** until Vaki supplies the email — so it is a launch blocker on the whole site, not just `/contact`.
   - `[PLACEHOLDER: registered business name — from Vaki]` — on `/privacy` ("Who runs this site") **and** `/terms` ("About this site"); the same token appears on both pages.
   - `[PLACEHOLDER: returns & exchanges policy — from Vaki]` — on `/terms` (Returns and exchanges section, D-1.06-4).
   - All render via `<PlaceholderToken>` in the brand's error colours so they are loud and obviously unfinished, never silently blank or invented text.
