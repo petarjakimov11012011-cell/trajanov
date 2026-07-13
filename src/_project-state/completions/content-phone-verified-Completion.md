@@ -30,7 +30,7 @@ None on scope. The brief named the two register edits in `current-state.md`; I a
 - State: `src/_project-state/current-state.md` (placeholder register: 4→3, phone line removed; owed-verification register: token list + phone-is-now-a-link note + real-phone tap-to-call item; plus the three stale narrative lines and the date stamp corrected for truth).
 - This report.
 - No change to `file-map.md` (no file added/removed) or `00_stack-and-config.md` (no dependency touched), per the brief.
-- Branch: `content-phone-verified` · PR to `main` (link added on push).
+- Branch: `content-phone-verified` · PR: https://github.com/petarjakimov11012011-cell/trajanov/pull/8
 
 ## 6. State updates done
 - `current-state.md` — ✅ mirrors reality: phone is a VERIFIED live channel, three placeholder tokens remain, the tap-to-call check is owed. NEXT line unchanged (`1.04b — Products, Catalog, Product page …`), as this update does not advance the phase sequence.
