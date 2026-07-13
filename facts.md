@@ -19,7 +19,7 @@
 |---|---|---|
 | Public email | — | UNVERIFIED (parallel track) |
 | Order-notification email (where orders are sent) | Vaki's personal email — address itself not yet supplied | UNVERIFIED (parallel track; blocks Phase 2.01) |
-| Phone | — | UNVERIFIED (parallel track) |
+| Phone | 078 820 520 (tel: +38978820520) | VERIFIED (owner via Lazar, 2026-07-13) |
 | Address | — | UNVERIFIED (parallel track) |
 
 ## Social & links

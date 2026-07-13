@@ -3,9 +3,10 @@ import type { Metadata } from "next";
 import { PlaceholderToken } from "@/components/placeholder-token";
 
 // Contact — Phase 1.06 Task 1. A short, plain page inside the existing shell.
-// Instagram is the one live, verified channel (facts.md); email and phone are
-// UNVERIFIED, so they render as visible placeholder tokens (D-1.06-1). No street
-// address, no owner name, no form.
+// Instagram and phone are live, verified channels (facts.md): Instagram opens in
+// a new tab, phone is a tel: link (local display 078 820 520, E.164 tel:
+// +38978820520). Email is still UNVERIFIED, so it renders as a visible
+// placeholder token (D-1.06-1). No street address, no owner name, no form.
 
 export const metadata: Metadata = {
   title: "Contact — Trajanov",
@@ -53,9 +54,13 @@ export default function ContactPage() {
           <div className="flex flex-col gap-2">
             <dt className="type-label text-text-muted">Phone</dt>
             <dd>
-              <PlaceholderToken>
-                [PLACEHOLDER: phone — from Vaki]
-              </PlaceholderToken>
+              <a
+                href="tel:+38978820520"
+                aria-label="Call Trajanov on 078 820 520"
+                className={`type-body-md inline-flex min-h-11 items-center font-bold text-text underline decoration-1 underline-offset-4 transition-opacity hover:opacity-80 motion-reduce:transition-none ${FOCUS_RING}`}
+              >
+                078 820 520
+              </a>
             </dd>
           </div>
         </dl>
