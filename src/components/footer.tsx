@@ -21,7 +21,10 @@ import { PlaceholderToken } from "@/components/placeholder-token";
 //     icons, so there is no Lucide Instagram. brand.md §6 permits custom marks; it
 //     is drawn on Lucide's 24×24 / 2px grid so it sits flush with the Mail icon.
 
-const LEGAL_LINKS = [
+// Bottom-bar secondary nav — ABOUT added 1.08 (D-1.08-5), alongside the legal
+// links, reusing the same link classes + separator pattern.
+const FOOTER_LINKS = [
+  { label: "ABOUT", href: "/about" },
   { label: "PRIVACY", href: "/privacy" },
   { label: "TERMS", href: "/terms" },
 ] as const;
@@ -80,7 +83,7 @@ export function Footer() {
               {/* min-w-0 + overflow-wrap keep a long token from forcing 375px overflow */}
               <span className="min-w-0 [overflow-wrap:anywhere]">
                 <PlaceholderToken>
-                  [PLACEHOLDER: public email — from Vaki]
+                  [PLACEHOLDER: public email — from Vladimir]
                 </PlaceholderToken>
               </span>
             </div>
@@ -105,8 +108,8 @@ export function Footer() {
         {/* Bottom bar — separated by a 1px --border rule (handover §2.4) */}
         <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-6">
           <p className="type-label text-text-muted">© 2026 Trajanov</p>
-          <nav aria-label="Legal" className="flex items-center gap-2">
-            {LEGAL_LINKS.map(({ label, href }, index) => (
+          <nav aria-label="Secondary" className="flex items-center gap-2">
+            {FOOTER_LINKS.map(({ label, href }, index) => (
               <span key={href} className="flex items-center gap-2">
                 {index > 0 && (
                   <span aria-hidden="true" className="type-label text-text-muted">

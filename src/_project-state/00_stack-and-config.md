@@ -84,3 +84,12 @@ Machine: Petar's MacBook. Node/npm and all package versions unchanged from the 1
 - **New design tokens (in `globals.css`, mirrored to `brand.md` §12):** `--radius-button: 12px` (buttons only), `--btn-hover-bg #2A2A2A`, `--btn-hover-border #B7BABB`, `--btn-pad-y 14px`, `--btn-pad-x 24px`, `--btn-cta-pad-x 20px`. No colour added to the resting palette.
 - **New asset:** `public/images/home/hero.jpg` — the owner-supplied Home hero photograph (1352×1390 JPG, ~166 KB), served via `next/image`. Not an npm dependency; committed binary.
 - **Build note:** `next/font` still fetches Google Fonts at build (verified working: `npm run build` ✓ this phase). No `next.config` change (the hero image is a local static import, so no remote-image domains).
+
+## 2026-07-14 — Phase 1.08 About page: NO new npm dependency; Hanken Cyrillic subset NOT enabled (unavailable)
+
+Machine: Petar's MacBook. Node/npm and all package versions unchanged from the 1.01 entry — **nothing was added to `package.json`.**
+
+- **Fonts unchanged. The brief's planned Hanken `cyrillic` subset was NOT enabled — Hanken Grotesk does not offer it (D-1.08-6).** `next/font/google` exposes only `["cyrillic-ext","latin","latin-ext","vietnamese"]` for Hanken Grotesk (empirically confirmed: `subsets: ["latin","cyrillic"]` fails the build with *`Type '"cyrillic"' is not assignable to type '"latin" | "latin-ext" | "cyrillic-ext" | "vietnamese"'`*). `cyrillic-ext` (U+0460+) does **not** cover the Macedonian core block (U+0400–045F: Ѓ Ќ Ѕ Ј Љ Њ Џ and а–я), so it would not help either. Hanken stays `subsets: ["latin"]`.
+- **Fallback taken (brief-sanctioned):** the About slogan block uses the body-font role, whose stack (`--font-body: var(--font-hanken), ui-sans-serif, system-ui, sans-serif`) already ends in a **system Cyrillic fallback**. Verified in dev with a temporary Macedonian test string — all Macedonian-specific glyphs paint (measured non-zero, varied widths; no tofu; screenshot in the 1.08 completion report). No `.notdef` boxes. **No subset change, no new package, no Lighthouse-affecting extra font download.**
+- A comment in `src/app/layout.tsx` records that Hanken has no `cyrillic` subset so a later dev does not re-add it and break the build.
+- Node/npm and all other package versions unchanged.

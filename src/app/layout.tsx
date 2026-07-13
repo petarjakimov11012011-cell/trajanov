@@ -15,6 +15,12 @@ const syne = Syne({
 });
 
 // Body face — brand.md §4. Hanken Grotesk is variable (covers 400/500/700).
+// Subset stays `latin`: Hanken Grotesk offers NO `cyrillic` Google Fonts subset
+// (next/font allows only latin/latin-ext/cyrillic-ext/vietnamese, and
+// cyrillic-ext excludes the Macedonian core block U+0400–045F), so `cyrillic`
+// cannot be added here — do not try, it fails the build. The About slogan's
+// eventual Macedonian text paints via the system Cyrillic fallback at the tail of
+// --font-body (ui-sans-serif, system-ui, sans-serif) — Phase 1.08, D-1.08-6.
 const hankenGrotesk = Hanken_Grotesk({
   subsets: ["latin"],
   variable: "--font-hanken",

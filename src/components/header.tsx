@@ -9,11 +9,12 @@ import { useCart } from "@/lib/cart";
 // Shared site header — brand.md §2/§4/§6/§10 + Phase 1.03 brief Task 3.
 // Sticky, solid Ink background (no blur), a bottom hairline divider, the
 // TRAJANOV wordmark, inline nav on desktop, and a focus-trapped panel behind the
-// Menu icon on mobile. Facts verified once (decision 6): nav is CATALOG/CONTACT,
+// Menu icon on mobile. Nav is CATALOG/ABOUT/CONTACT (ABOUT added 1.08, D-1.08-5);
 // cart is visual-only (links to /cart, no badge), nothing from the strip register.
 
 const NAV_LINKS = [
   { label: "CATALOG", href: "/products" },
+  { label: "ABOUT", href: "/about" },
   { label: "CONTACT", href: "/contact" },
 ] as const;
 

@@ -46,7 +46,7 @@ export default function ContactPage() {
             <dt className="type-label text-text-muted">Email</dt>
             <dd>
               <PlaceholderToken>
-                [PLACEHOLDER: public email — from Vaki]
+                [PLACEHOLDER: public email — from Vladimir]
               </PlaceholderToken>
             </dd>
           </div>
